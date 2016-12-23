@@ -14,16 +14,22 @@ public class User {
     @GeneratedValue
     private int id;
 
-    @Column(nullable = false,unique = true,length = 255)
+    @Column(nullable = false,unique = true,length = 20)
     private String username;
 
     @Column(nullable = false,length = 255)
     private String password;
 
-    @Column
-    private int identity;
+    @Column(nullable = false)
+    private int identity=0; //默认为0
 
     public User() {
+    }
+
+    public User(String username, String password, int identity) {
+        this.username = username;
+        this.password = password;
+        this.identity = identity;
     }
 
     public int getId() {

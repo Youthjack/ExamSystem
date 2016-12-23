@@ -44,7 +44,7 @@ public class TeacherController {
             json=objectMapper.writeValueAsString(message);
             return json;
         }
-        if(question.getSession()==null||question.getAns()==null||question.getPoint()==0||question.getQues()==null||
+        if(question.getChapter()==null||question.getAnswer()==null||question.getPoint()==0||question.getQuestion()==null||
                 question.getType()==0){
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
@@ -83,7 +83,7 @@ public class TeacherController {
             System.out.println("卡在解析");
             return json;
         }
-        if(question.getSession()==null||question.getAns()==null||question.getPoint()==0||question.getQues()==null||
+        if(question.getChapter()==null||question.getAnswer()==null||question.getPoint()==0||question.getQuestion()==null||
                 question.getId()==0){
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
@@ -91,8 +91,8 @@ public class TeacherController {
             return json;
         }
         try {
-            questionRepository.updateQuestion(question.getQues(),question.getAns(),question.getPoint(),
-                    question.getSession(),question.getId());
+            questionRepository.updateQuestion(question.getQuestion(),question.getAnswer(),question.getPoint(),
+                    question.getChapter(),question.getId());
             message.setStatus("success");
         }catch (Exception e){
             System.out.println("卡在数据库");
@@ -192,7 +192,7 @@ public class TeacherController {
     public String showAllPapers()throws JsonProcessingException{
         String json;
         Message message=new Message();
-        List<Paper>list=paperRepository.findAllPaperQuestion();
+        List<Paper>list=paperRepository.findAll();
         try{
             json=objectMapper.writeValueAsString(list);
             message.setStatus("success");
@@ -220,12 +220,12 @@ public class TeacherController {
                 String ques=reader.get(0);
                 String ans=reader.get(1);
                 int point=Integer.parseInt(reader.get(2));
-                String session=reader.get(3);
+                String chapter=reader.get(3);
                 int type=Integer.parseInt(reader.get(4));
-                question.setAns(ans);
-                question.setQues(ques);
+                question.setAnswer(ans);
+                question.setQuestion(ques);
                 question.setPoint(point);
-                question.setSession(session);
+                question.setChapter(chapter);
                 question.setType(type);
                 questionRepository.save(question);
             }

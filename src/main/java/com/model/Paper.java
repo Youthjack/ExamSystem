@@ -1,6 +1,9 @@
 package com.model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.Set;
 
 /**
@@ -10,17 +13,28 @@ import java.util.Set;
 public class Paper {
     @Id
     @GeneratedValue
+    @Column(name = "paperId")
     private int id;
-    @Column
+    @Column(nullable = false,length = 50)
     private String paperName;
     @Column
     private String questions;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST,
+            CascadeType.REMOVE,CascadeType.MERGE})
     @JoinTable(name = "Paper_Question",joinColumns = {
-            @JoinColumn(name = "paperId",referencedColumnName = "id")},
-            inverseJoinColumns ={@JoinColumn(name = "questionId",referencedColumnName = "id")}
+            @JoinColumn(name = "paperId")},
+            inverseJoinColumns ={@JoinColumn(name = "questionId")}
     )
     private Set<Question>questionSet;
+
+    public Paper() {}
+
+    public Paper(String paperName, String questions, Set<Question> questionSet) {
+        this.paperName = paperName;
+        this.questions = questions;
+        this.questionSet = questionSet;
+    }
 
     public int getId() {
         return id;

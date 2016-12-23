@@ -10,19 +10,34 @@ import java.util.Set;
 public class Question {
     @Id
     @GeneratedValue
+    @Column(name = "questionId")
     private int id;
+    @Column(nullable = false)
+    private String question;
     @Column
-    private String ques;
-    @Column
-    private String ans;
+    private String answer;
     @Column
     private int point;
     @Column
-    private String session;
+    private String chapter;
     @Column
     private int type;
-    @ManyToMany(mappedBy = "questionSet")
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+            fetch = FetchType.LAZY,
+            mappedBy = "questionSet")
     private Set<Paper>papers;
+
+    public Question(){}
+
+    public Question(String question, String answer, int point,
+                    String chapter, int type, Set<Paper> papers) {
+        this.question = question;
+        this.answer = answer;
+        this.point = point;
+        this.chapter = chapter;
+        this.type = type;
+        this.papers = papers;
+    }
 
     public int getId() {
         return id;
@@ -32,20 +47,20 @@ public class Question {
         this.id = id;
     }
 
-    public String getQues() {
-        return ques;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setQues(String ques) {
-        this.ques = ques;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
-    public String getAns() {
-        return ans;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setAns(String ans) {
-        this.ans = ans;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public int getPoint() {
@@ -56,12 +71,12 @@ public class Question {
         this.point = point;
     }
 
-    public String getSession() {
-        return session;
+    public String getChapter() {
+        return chapter;
     }
 
-    public void setSession(String session) {
-        this.session = session;
+    public void setChapter(String chapter) {
+        this.chapter = chapter;
     }
 
     public int getType() {

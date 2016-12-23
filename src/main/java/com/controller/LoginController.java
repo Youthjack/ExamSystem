@@ -7,7 +7,6 @@ import com.model.User;
 import com.util.LoginAuthModel;
 import com.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +21,13 @@ import java.util.UUID;
 public class LoginController {
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    RedisTemplate redisTemplate;
 
     ObjectMapper objectMapper=new ObjectMapper();
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(){
-        if(redisTemplate!=null)
-            System.out.println("redistemplate不为空");
-        else
-            System.out.println("redistemplate为空");
+//            System.out.println("redistemplate不为空");
+//            System.out.println("redistemplate为空");
         return "Login";
     }
 

@@ -20,6 +20,6 @@ public interface PaperRepository extends JpaRepository<Paper,Long>{
     @Transactional
     int deletePaperById(@Param("id")int id);
 
-    @Query("select a from Paper a,Question b,Paper_Question c where a.Id=c.paperId and b.Id=c.questionId")
-    List<Paper>findAllPaperQuestion();
+//    @Query("select a from Paper a,Question b,Paper_Question c where a.id=c.paperId and b.id=c.questionId")
+//    List<Paper>findAllPaperQuestion();
 }

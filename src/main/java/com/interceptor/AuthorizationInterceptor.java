@@ -5,8 +5,6 @@ import com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.method.HandlerMethod;
@@ -83,16 +81,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         redisTemplate.boundValueOps(userId).expire(10, TimeUnit.MINUTES);   //延长登录时间
         return true;
     }*/
-    @Autowired
-    private RedisTemplate<String,String>redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("验证用户开始了...");
-        if(redisTemplate!=null)
-            System.out.println("redistemplate不为空");
-        else
-            System.out.println("redistemplate为空");
         if(!(handler instanceof HandlerMethod)){
             System.out.println("handler不对??");
             return true;
