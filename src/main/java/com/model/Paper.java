@@ -1,8 +1,7 @@
 package com.model;
 
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import java.util.Set;
 
@@ -13,20 +12,22 @@ import java.util.Set;
 public class Paper {
     @Id
     @GeneratedValue
-    @Column(name = "paperId")
     private int id;
     @Column(nullable = false,length = 50)
     private String paperName;
     @Column
     private String questions;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST,
-            CascadeType.REMOVE,CascadeType.MERGE})
-    @JoinTable(name = "Paper_Question",joinColumns = {
-            @JoinColumn(name = "paperId")},
-            inverseJoinColumns ={@JoinColumn(name = "questionId")}
+
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "Paper_Question",
+            joinColumns = {@JoinColumn(name = "paperId",referencedColumnName = "id")},
+            inverseJoinColumns ={@JoinColumn(name = "questionId",referencedColumnName = "id")}
     )
-    private Set<Question>questionSet;
+    private Set<Question> questionSet;
+
+    @OneToMany(mappedBy = "paper",fetch = FetchType.EAGER)
+    private Set<Exam> examSet;
+
 
     public Paper() {}
 
@@ -66,5 +67,13 @@ public class Paper {
 
     public void setQuestionSet(Set<Question> questionSet) {
         this.questionSet = questionSet;
+    }
+
+    public void setExamSet(Set<Exam> examSet) {
+        this.examSet = examSet;
+    }
+
+    public Set<Exam> getExamSet() {
+        return examSet;
     }
 }

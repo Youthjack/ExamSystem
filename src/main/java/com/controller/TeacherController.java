@@ -2,13 +2,16 @@ package com.controller;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonModel.JoinExam;
 import com.jsonModel.Message;
+import com.mapper.ExamRepository;
 import com.mapper.PaperRepository;
 import com.mapper.QuestionRepository;
-import com.model.Paper;
-import com.model.Question;
+import com.mapper.StudentRepository;
+import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by takahiro on 2016/12/22.
@@ -29,6 +34,10 @@ public class TeacherController {
     QuestionRepository questionRepository;
     @Autowired
     PaperRepository paperRepository;
+    @Autowired
+    ExamRepository examRepository;
+    @Autowired
+    StudentRepository studentRepository;
     ObjectMapper objectMapper=new ObjectMapper();
 
     @RequestMapping("/addQuestion")
@@ -158,6 +167,23 @@ public class TeacherController {
         return json;
     }
 
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() throws JsonProcessingException{
+
+       Set<Question> questionSet = new HashSet<Question>();
+        for(int i=0;i<26;i++) {
+            Question question = new Question();
+            question.setQuestion("a"+i);
+            questionSet.add(question);
+        }
+        Paper paper = new Paper();
+        paper.setPaperName("test");
+        paper.setQuestionSet(questionSet);
+        paperRepository.save(paper);
+        return objectMapper.writeValueAsString(paper);
+    }
+
     @RequestMapping("/deletePaper")
     @ResponseBody
     public String deletePaper(@RequestBody String body)throws JsonProcessingException{
@@ -234,6 +260,41 @@ public class TeacherController {
             message.setStatus("error");
         }
         json=objectMapper.writeValueAsString(message);
+        return json;
+    }
+
+    @RequestMapping(value = "/postExam",method = RequestMethod.POST)
+    @ResponseBody
+    public String postExam(JoinExam joinExam) throws JsonProcessingException {
+        Message msg = new Message();
+        String json;
+        if(joinExam==null) {
+            msg.setStatus("error");
+            json = objectMapper.writeValueAsString(msg);
+        } else {
+            int sid = joinExam.getStudentId();
+            int pid = joinExam.getPaperId();
+            Student student;
+            Paper paper;
+            if(null == (student = studentRepository.findById(sid))) {
+                msg.setStatus("student can not find");
+                json = objectMapper.writeValueAsString(msg);
+            } else if(null == (paper=paperRepository.findById(pid))) {
+                msg.setStatus("paper can not find");
+                json = objectMapper.writeValueAsString(msg);
+            } else {
+                Exam exam = new Exam();
+                StudentPaperPk pk = new StudentPaperPk(sid,pid);
+                exam.setPk(pk);
+                exam.setName(joinExam.getName());
+                exam.setStudent(student);
+                exam.setPaper(paper);
+                exam.setDate(joinExam.getDate());
+                examRepository.save(exam);
+                msg.setStatus("success");
+                json = objectMapper.writeValueAsString(msg);
+            }
+        }
         return json;
     }
 }

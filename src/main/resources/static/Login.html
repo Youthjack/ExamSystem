@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Forms</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/datepicker3.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/datepicker3.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
 
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
@@ -22,25 +22,28 @@
     <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
         <div class="login-panel panel panel-default">
             <div class="panel-heading">Log in</div>
+            <p th:text="哈哈"></p>
             <div class="panel-body">
-                <form role="form">
+                <!--<p th:if="${param.logout}" class="bg-warning">已成功注销</p>-->
+                <!--<p th:if="${param.error}" class="bg-danger">有错误，请重试</p>-->
+                <form name="form">
                     <fieldset>
                         <div class="form-group">
-                            <input class="form-control" id="username" placeholder="username" name="username" type="email" autofocus="">
+                            <input class="form-control" id="username" type="text" placeholder="username" name="username"/>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" id="password" placeholder="Password" name="password" type="password" value="">
+                            <input class="form-control" id="password" type="password" placeholder="Password" name="password"/>
                         </div>
 
                         <div class="form-group form-horizontal">
-                            <label class="radio-inline" >
-                                <input id="identity1" type="radio" name="identity" value="">学生
+                            <label class="radio-inline">
+                                <input id="identity1" type="radio" name="identity" value=""/>学生
                             </label>
                             <label class="radio-inline">
-                                <input id="identity2" type="radio" name="identity" value="">老师
+                                <input id="identity2" type="radio" name="identity" value=""/>老师
                             </label>
                             <label class="radio-inline">
-                                <input id="identity3" type="radio" name="identity" value="">管理员
+                                <input id="identity3" type="radio" name="identity" value=""/>管理员
                             </label>
                         </div>
 
@@ -58,8 +61,6 @@
     </div><!-- /.col-->
 </div><!-- /.row -->
 
-
-</body>
 <script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/chart.min.js"></script>
@@ -67,9 +68,9 @@
 <script src="js/easypiechart.js"></script>
 <script src="js/easypiechart-data.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
-
-<!--加密方法使用了这篇博客上面的,http://www.cnblogs.com/Jackson-Bruce/p/4011733.html-->
 <script src="js/HashEncrypt.js"></script>
+<!--加密方法使用了这篇博客上面的,http://www.cnblogs.com/Jackson-Bruce/p/4011733.html-->
+
 <script type="text/javascript">
     function mySub(){
         var username=document.getElementById('username').value;
@@ -150,10 +151,11 @@
     }(window.jQuery);
 
     $(window).on('resize', function () {
-        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-    })
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
+    });
     $(window).on('resize', function () {
-        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-    })
+        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide');
+    });
 </script>
+</body>
 </html>

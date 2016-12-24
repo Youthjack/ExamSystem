@@ -15,7 +15,7 @@ public class Teacher {
     private int id;
     @Column(nullable = false,unique = true)
     private String number;
-    @Column(nullable = false,length = 20)
+    @Column(nullable = false,length = 50)
     private String name;
     @Column
     private String email;

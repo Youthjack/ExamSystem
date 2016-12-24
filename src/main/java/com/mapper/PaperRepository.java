@@ -15,6 +15,8 @@ import java.util.List;
 public interface PaperRepository extends JpaRepository<Paper,Long>{
     List<Paper>findAll();
 
+    Paper findById(int id);
+
     @Modifying
     @Query("delete from Paper where id=:id")
     @Transactional

@@ -3,6 +3,7 @@ package com;
 import com.interceptor.AuthorizationInterceptor;
 import com.mapper.UserRepository;
 import com.model.User;
+import com.model.basicEnum.IdentifyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -59,9 +62,9 @@ public class Application extends WebMvcConfigurerAdapter implements CommandLineR
         if(userRepository.findByUsername("admin") != null) {
             return;
         }
-        User student = new User("student", "123456",  1);
-        User teacher = new User("teacher", "123456", 2);
-        User admin = new User("admin", "123456", 3);
+        User student = new User("student", "123456", IdentifyType.STUDENT);
+        User teacher = new User("teacher", "123456", IdentifyType.TEACHER);
+        User admin = new User("admin", "123456", IdentifyType.ADMIN);
         userRepository.save(student);
         userRepository.save(teacher);
         userRepository.save(admin);

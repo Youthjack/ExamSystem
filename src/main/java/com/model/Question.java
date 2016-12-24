@@ -1,5 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,7 +12,6 @@ import java.util.Set;
 public class Question {
     @Id
     @GeneratedValue
-    @Column(name = "questionId")
     private int id;
     @Column(nullable = false)
     private String question;
@@ -22,6 +23,7 @@ public class Question {
     private String chapter;
     @Column
     private int type;
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.LAZY,
             mappedBy = "questionSet")

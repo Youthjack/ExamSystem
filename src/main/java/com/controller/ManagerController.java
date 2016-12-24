@@ -5,8 +5,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsonModel.Message;
 import com.jsonModel.ToManagerSee;
+import com.mapper.StudentRepository;
 import com.mapper.UserRepository;
+import com.model.Student;
 import com.model.User;
+import com.model.basicEnum.IdentifyType;
 import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,8 @@ import java.util.List;
 public class ManagerController {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    StudentRepository studentRepository;
     ObjectMapper objectMapper=new ObjectMapper();
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
@@ -39,18 +44,18 @@ public class ManagerController {
     @ResponseBody
     public String see()throws JsonProcessingException{
         String json;
-        List<User>list=userRepository.findPartAll();
-        List<ToManagerSee>res=new ArrayList<ToManagerSee>();
+        List<User> list=userRepository.findPartAll();
+        List<ToManagerSee> res=new ArrayList<ToManagerSee>();
         for(int i=0;i<list.size();i++){
             User user=list.get(i);
             ToManagerSee obj=new ToManagerSee();
             obj.setId(user.getId());
             obj.setUsername(user.getUsername());
-            if(user.getIdentity()==1){
+            if(user.getIdentity()== IdentifyType.STUDENT){
                 obj.setIdentity("学生");
-            }else if(user.getIdentity()==2){
+            }else if(user.getIdentity()==IdentifyType.TEACHER){
                 obj.setIdentity("老师");
-            }else if(user.getIdentity()==3){
+            }else if(user.getIdentity()==IdentifyType.ADMIN){
                 obj.setIdentity("管理员");
             }else{
                 obj.setIdentity("不明身份者");
@@ -74,7 +79,7 @@ public class ManagerController {
             json=objectMapper.writeValueAsString(message);
             return json;
         }
-        if(user.getUsername()==null||user.getPassword()==null||user.getIdentity()==0) {
+        if(user.getUsername()==null||user.getPassword()==null||user.getIdentity()=="") {
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
@@ -102,7 +107,7 @@ public class ManagerController {
             json=objectMapper.writeValueAsString(message);
             return json;
         }
-        if(user.getUsername()==null||user.getPassword()==null||user.getIdentity()==0) {
+        if(user.getUsername()==null||user.getPassword()==null||user.getIdentity()=="") {
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
@@ -143,5 +148,16 @@ public class ManagerController {
         }
         json=objectMapper.writeValueAsString(message);
         return json;
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() throws JsonProcessingException {
+        Student student = new Student();
+        student.setName("Jack");
+        student.setClassName("Mnangejdd");
+        student.setNumber("12312423");
+        studentRepository.save(student);
+        return objectMapper.writeValueAsString(student);
     }
 }

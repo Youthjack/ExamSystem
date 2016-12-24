@@ -1,9 +1,7 @@
 package com.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by takahiro on 2016/12/20.
@@ -15,10 +13,13 @@ public class Student {
     private int id;
     @Column(nullable = false,unique = true)
     private String number;
-    @Column(nullable = false,length = 20)
+    @Column(nullable = false,length = 50)
     private String name;
-    @Column(nullable = false,length = 20)
+    @Column(nullable = false,length = 50)
     private String className;
+
+    @OneToMany(mappedBy = "student",fetch = FetchType.EAGER)
+    private Set<Exam> examSet;
 
     public Student() {}
 
@@ -58,5 +59,13 @@ public class Student {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public void setExamSet(Set<Exam> examSet) {
+        this.examSet = examSet;
+    }
+
+    public Set<Exam> getExamSet() {
+        return examSet;
     }
 }
