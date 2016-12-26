@@ -1,11 +1,9 @@
 package com.controller;
 
 import com.csvreader.CsvReader;
-import com.csvreader.CsvWriter;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsonModel.JoinExam;
+import com.jsonModel.PostExam;
 import com.jsonModel.Message;
 import com.mapper.ExamRepository;
 import com.mapper.PaperRepository;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashSet;
@@ -263,17 +260,17 @@ public class TeacherController {
         return json;
     }
 
-    @RequestMapping(value = "/postExam",method = RequestMethod.POST)
+    @RequestMapping(value = "/postExam",method = RequestMethod.POST,consumes = "application/json",produces = "application/json")
     @ResponseBody
-    public String postExam(JoinExam joinExam) throws JsonProcessingException {
+    public String postExam(PostExam postExam) throws JsonProcessingException {
         Message msg = new Message();
         String json;
-        if(joinExam==null) {
+        if(postExam==null) {
             msg.setStatus("error");
             json = objectMapper.writeValueAsString(msg);
         } else {
-            int sid = joinExam.getStudentId();
-            int pid = joinExam.getPaperId();
+            int sid = postExam.getStudentId();
+            int pid = postExam.getPaperId();
             Student student;
             Paper paper;
             if(null == (student = studentRepository.findById(sid))) {
@@ -286,10 +283,10 @@ public class TeacherController {
                 Exam exam = new Exam();
                 StudentPaperPk pk = new StudentPaperPk(sid,pid);
                 exam.setPk(pk);
-                exam.setName(joinExam.getName());
+                exam.setName(postExam.getName());
                 exam.setStudent(student);
                 exam.setPaper(paper);
-                exam.setDate(joinExam.getDate());
+                exam.setDate(postExam.getDate());
                 examRepository.save(exam);
                 msg.setStatus("success");
                 json = objectMapper.writeValueAsString(msg);

@@ -1,5 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -24,14 +26,21 @@ public class Exam {
     @Column
     private Date date;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "student")
     private Student student;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "paper")
     private Paper paper;
 
+    @Column
+    private int status = 0;
+
+    @Column
+    private int mark = 0;
 
     public StudentPaperPk getPk() {
         return pk;
@@ -95,5 +104,21 @@ public class Exam {
 
     public String getName() {
         return name;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
     }
 }
