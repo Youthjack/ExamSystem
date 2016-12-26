@@ -15,7 +15,7 @@
     <link href="../public/dashboard.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]><script  src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../public/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -42,7 +42,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          <li><a><span class="white-font">欢迎你！<span id="stu_name">NULL&nbsp;</span>[<span id="identity">NULL</span>]</span></a></li>
+          <li><a><span class="white-font">欢迎你！<span id="stu_name">朱天语&nbsp;</span>[<span id="identity">学生</span>]</span></a></li>
           <li><a href="#"><span class="white-font">帮助</span></a></li>
           <li><a href="#"><span class="white-font">退出</span></a></li>
           <li><a href="#"><span class="white-font"></span></a></li>
@@ -58,37 +58,46 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">首页</a></li>
+            <li><a href="student_func.html">首页</a></li>
             <li><a href="student_exam.html">进入考试</a></li>
             <li><a href="student_review.html">相关知识</a></li>
             <li><a href="student_history.html">历史考试</a></li>
-            <li><a href="student_info.html">个人信息</a></li>
+            <li class="active"><a href="student_info.html">个人信息</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 class="page-header">选择你的下一步：</h2>
-          <!--选择图标-->
-          <div id="icon_pick" class="row placeholders">
-            <div id="exam" class="col-xs-6 col-sm-3 placeholder">
-              <img src="../img/考试.png">
-              <h4>进入考试</h4>
-              <span class="text-muted">点击进入考试，<br/>说不定碰巧100分</span>
+          <h2 class="page-header">学生个人信息：</h2>
+          <div class="row">
+            <!--左边-->
+            <div class="col-md-5">
+              <div class="panel panel-default">
+                <div class="panel-heading">学生个人信息</div>
+                  <ul class="list-group">
+                    <li class="list-group-item">学号：&emsp;<span id="stu_id">NULL</span></li>
+                    <li class="list-group-item">姓名：&emsp;<span id="stu_name2">NULL</span></li>
+                    <li class="list-group-item">班级：&emsp;<span id="stu_class">NULL</span></li>
+                  </ul>  
+              </div>
             </div>
-            <div id="review" class="col-xs-6 col-sm-3 placeholder">
-              <img src="../img/知识.png">
-              <h4>复习知识</h4>
-              <span class="text-muted">比你努力的都复习，<br/>你复习也没用</span>
+            <!--右边-->
+            <div class="col-md-7">
+              <div class="panel panel-default">
+                <div class="panel-heading">修改密码</div>
+                  <div class="panel-body">
+                      <!--修改密码-->
+                      <form class="form-sign" role="form">
+                        <p>旧密码：<input id="oldpswd" type="password" class="form-control" placeholder="请输入你的旧密码" required></p>
+                        <p>新密码：<input id="newpswd" type="password" class="form-control" placeholder="请输入你的新密码" required></p>
+                        <p>确认密码：<input id="newpswd2" type="password" class="form-control" placeholder="再次输入你的新密码" required></p>
+                        <div style="margin-top: 10px; text-align: center;">
+                          <button id="btn_submit" class="btn btn-danger" type="button">提交</button>
+                          <button class="btn btn-default" type="reset">清空</button>
+                        </div>
+                      </form><!--修改密码form-->
+                  </div>
+              </div>
             </div>
-            <div id="history" class="col-xs-6 col-sm-3 placeholder">
-              <img src="../img/历史.png">
-              <h4>历史考试</h4>
-              <span class="text-muted">不看看之前的考试，<br/>都不知道原来你不适合学习</span>
-            </div>
-            <div id="info" class="col-xs-6 col-sm-3 placeholder">
-              <img src="../img/个人信息.png">
-              <h4>个人信息</h4>
-              <span class="text-muted">看什么看，<br/>除了改密码你什么都不会</span>
-            </div>
+
           </div>
         </div>
       </div>
@@ -106,6 +115,6 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../public/ie10-viewport-bug-workaround.js"></script>
 
-    <script src="../js/student_func.js"></script>
+    <script src="../js/student_info.js"></script>
   </body>
 </html>

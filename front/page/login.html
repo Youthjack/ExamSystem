@@ -48,10 +48,10 @@
         <!--提交表单-->
         <form id="form_login" class="form-signin" role="form">
           <h2 class="form-signin-heading" style="color: white">Please sign in, Good Luck!</h2>
-          <input id="username" name="username" type="text" class="form-control" placeholder="请输入你的学号学号" required autofocus>
-          <input id="password" name="password" type="password" class="form-control" placeholder="密码，初始密码12345" required>
+          <input id="user" type="text" class="form-control" placeholder="请输入你的学号学号" required autofocus>
+          <input id="pswd" type="password" class="form-control" placeholder="密码，初始密码12345" required>
             <!--Radio-->
-            <div id="identity" class="radio-group">
+            <div id="idty" class="radio-group">
               <label class="radio-inline">
                 <input type="radio" name="identity" value="student" checked><span class="white-font">学生</span>
               </label>
@@ -62,7 +62,7 @@
                 <input type="radio" name="identity" value="admin"><span class="white-font">管理员</span>
               </label>
             </div>
-          <button class="btn btn-lg btn-primary btn-block" type="submit" id="btn_login_submit">Sign in</button>
+          <button class="btn btn-lg btn-primary btn-block" type="button" id="btn_login_submit">Sign in</button>
         </form>
       </div> <!-- /container -->
     </div>
@@ -70,6 +70,8 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="../public/jquery/jquery-3.1.0.min.js"></script>
+    <script src="../public/jquery/jquery.cookie.js"></script>
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../public/bootstrap/js/bootstrap.min.js"></script>
 

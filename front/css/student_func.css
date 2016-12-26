@@ -13,3 +13,18 @@
 	color: white;
 	font-weight: 500;
 }
+
+.placeholder img {
+	border-radius: 0%;
+}
+
+#icon_pick {
+	margin-top: 100px;
+}
+
+#exam, #review, #history, #info {
+	padding-bottom: 10px;
+	padding-top: 10px;
+	cursor: pointer;
+}
+
