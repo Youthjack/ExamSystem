@@ -105,33 +105,34 @@
                 url:'/login_auth',
                 data:JSON.stringify({'username':username,'password':password,'identity':iden}),
                 success:function(data,status){
-                    console.log(data);
-                    var d=eval('('+data+')');
-                    console.log(d['token']+" "+d['userId']+" "+d['message']);
-                    var token=d['token'];
-                    var userId=d['userId'];
-                    var message=d['message'];
-                    var params={userId:userId,data:token};
-                    if(message=='success') {
-                        var minute=20;
-                        var exp=new Date();
-                        exp.setTime(exp.getTime()+minute*60*1000);
-                        document.cookie="token="+token+";expires="+exp.toDateString();
-                        document.cookie="userId="+userId+";expires="+exp.toDateString();
-
-                        var arr=document.cookie.match(new RegExp("(^|)"+"token"+"=([^;]*)(;|$)"));
-                        if(arr!=null)
-                            console.log("保存的cookie是:"+unescape(arr[2]));
-                        if(iden==1) {
-
-                        }else if(iden==2){
-
-                        }else if(iden==3) {
-                            window.location = '/manager/index?' + $.param(params);
-                        }
-                    }else{
-                        alert("用户名或密码错误");
-                    }
+                    alert(data);
+//                    console.log(data);
+//                    var d=eval('('+data+')');
+//                    console.log(d['token']+" "+d['userId']+" "+d['message']);
+//                    var token=d['token'];
+//                    var userId=d['userId'];
+//                    var message=d['message'];
+//                    var params={userId:userId,data:token};
+//                    if(message=='success') {
+//                        var minute=20;
+//                        var exp=new Date();
+//                        exp.setTime(exp.getTime()+minute*60*1000);
+//                        document.cookie="token="+token+";expires="+exp.toDateString();
+//                        document.cookie="userId="+userId+";expires="+exp.toDateString();
+//
+//                        var arr=document.cookie.match(new RegExp("(^|)"+"token"+"=([^;]*)(;|$)"));
+//                        if(arr!=null)
+//                            console.log("保存的cookie是:"+unescape(arr[2]));
+//                        if(iden==1) {
+//
+//                        }else if(iden==2){
+//
+//                        }else if(iden==3) {
+//                            window.location = '/manager/index?' + $.param(params);
+//                        }
+//                    }else{
+//                        alert("用户名或密码错误");
+//                    }
                 },
                 error:function(xmlhttprequest,textstatus,errorthrown){
                     console.log(errorthrown);

@@ -35,9 +35,13 @@ public class LoginController {
 
     ObjectMapper objectMapper=new ObjectMapper();
 
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login() {
+        return "Login";
+    }
 
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login_auth",method = RequestMethod.POST)
     @ResponseBody
     public String login(@RequestBody FromLogin fromLogin) throws JsonProcessingException {
         String username = fromLogin.getUsername();
@@ -83,7 +87,7 @@ public class LoginController {
                              @RequestParam("identity")int identity){
         return username+" "+password+" "+identity;
     }*/
-    @RequestMapping(value = "/login_auth",method = RequestMethod.POST)
+/*    @RequestMapping(value = "/login_auth",method = RequestMethod.POST)
     @ResponseBody
     public String login_auth(@RequestBody String body, HttpServletRequest request)throws JsonProcessingException{
         System.out.println(body);
@@ -126,6 +130,6 @@ public class LoginController {
         token.setMessage("fail");
         json=objectMapper.writeValueAsString(token);
         return json;
-    }
+    }*/
 
 }
