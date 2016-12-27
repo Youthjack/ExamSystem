@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/teacher/updatePaper" method="post">
+    <input id="id" name="id" type="text">
+    <input id="studentsId" name="studentsId" type="text">
+    <input id="name" name="name" type="text">
+    <input id="number" name="number" type="text">
+    <input id="email" name="email" type="text">
+    <input id="sub" type="button" onclick="mySub()">
+</form>
+
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/chart.min.js"></script>
+<script src="../js/chart-data.js"></script>
+<script src="../js/easypiechart.js"></script>
+<script src="../js/easypiechart-data.js"></script>
+<script src="../js/bootstrap-datepicker.js"></script>
+<script src="../js/bootstrap-table.js"></script>
+<script>
+    function mySub() {
+        var id=parseInt(document.getElementById('id').value);
+        var studentsId=document.getElementById('studentsId').value;
+        var name=document.getElementById('name').value;
+        var number=document.getElementById('number').value;
+        var email=document.getElementById('email').value;
+        $.ajaxSetup({
+            contentType:'application/json'
+        });
+        $.ajax({
+            type:'POST',
+            url:'/teacher/addStudents',
+            data:JSON.stringify({'studentsId':studentsId,'teacherId':id,'name':name,'number':number,
+                'email':email}),
+            success:function(data,status){
+                console.log(data);
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown){
+                console.log(errorthrown);
+            }
+        });
+    }
+</script>
+</body>
+</html>

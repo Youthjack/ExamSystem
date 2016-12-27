@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>进入考试</title>
+</head>
+<body>
+<form method="post">
+    <input id="studentId" name="studentId" type="text" placeholder="studentId">
+    <input id="paperId" name="paperId" type="text" placeholder="paperId">
+    <input id="sub" type="button" onclick="mySub()">
+</form>
+
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/chart.min.js"></script>
+<script src="../../js/chart-data.js"></script>
+<script src="../../js/easypiechart.js"></script>
+<script src="../../js/easypiechart-data.js"></script>
+<script src="../../js/bootstrap-datepicker.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
+<script>
+    function mySub() {
+        var studentId=parseInt(document.getElementById('studentId').value);
+        var paperId=parseInt(document.getElementById('paperId').value);
+        $.ajaxSetup({
+            contentType:'application/json'
+        });
+        $.ajax({
+            type:'POST',
+            url:'/student/enterExam',
+            data:JSON.stringify({'studentId':studentId,'paperId':paperId}),
+            success:function(data,status){
+                console.log(data);
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown){
+                console.log(errorthrown);
+            }
+        });
+    }
+</script>
+</body>
+</html>
