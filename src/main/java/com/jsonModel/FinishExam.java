@@ -1,0 +1,56 @@
+package com.jsonModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by takahiro on 2016/12/26.
+ */
+public class FinishExam {
+    int paperId;
+    int studentId;
+    List<String> answerList = new ArrayList<String>();
+    List<Integer> idList = new ArrayList<Integer>();
+    int timeSec;
+
+    public void setPaperId(int paperId) {
+        this.paperId = paperId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setAnswerList(List<String> answerList) {
+        this.answerList = answerList;
+    }
+
+    public void setTimeSec(int timeSec) {
+        this.timeSec = timeSec;
+    }
+
+    public int getPaperId() {
+
+        return paperId;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public List<String> getAnswerList() {
+        return answerList;
+    }
+
+    public int getTimeSec() {
+        return timeSec;
+    }
+
+    public List<Integer> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<Integer> idList) {
+        this.idList = idList;
+    }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员添加学生</title>
+</head>
+<body>
+<form action="/teacher/updatePaper" method="post">
+    <input id="username" name="username" type="text">
+    <input id="password" name="password" type="text">
+    <input id="identity" name="identity" type="text">
+    <input id="name" name="name" type="text">
+    <input id="className" name="className" type="text">
+    <input id="sub" type="button" onclick="mySub()">
+</form>
+
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/chart.min.js"></script>
+<script src="../../js/chart-data.js"></script>
+<script src="../../js/easypiechart.js"></script>
+<script src="../../js/easypiechart-data.js"></script>
+<script src="../../js/bootstrap-datepicker.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
+<script>
+    function mySub() {
+        var username=document.getElementById('username').value;
+        var password=document.getElementById('password').value;
+        var identity=document.getElementById('identity').value;
+        var name=document.getElementById('name').value;
+        var number=username;
+        var className=document.getElementById('className').value;
+        $.ajaxSetup({
+            contentType:'application/json'
+        });
+        $.ajax({
+            type:'POST',
+            url:'/manager/add',
+            data:JSON.stringify({'username':username,'password':password,'identity':identity,
+                'name':name,'number':number,'className':className}),
+            success:function(data,status){
+                console.log(data);
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown){
+                console.log(errorthrown);
+            }
+        });
+    }
+</script>
+</body>
+</html>

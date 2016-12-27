@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加试卷</title>
+</head>
+<body>
+<form method="post">
+    <input id="paperName" name="paperName" type="text" placeholder="paper_name">
+    <input id="questions" name="questions" type="text" placeholder="questions">
+    <input id="sub" type="button" onclick="mySub()">
+</form>
+
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/chart.min.js"></script>
+<script src="../../js/chart-data.js"></script>
+<script src="../../js/easypiechart.js"></script>
+<script src="../../js/easypiechart-data.js"></script>
+<script src="../../js/bootstrap-datepicker.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
+<script>
+    function mySub() {
+        var paperName=document.getElementById('paperName').value;
+        var questions=document.getElementById('questions').value;
+        $.ajaxSetup({
+            contentType:'application/json'
+        });
+        $.ajax({
+            type:'POST',
+            url:'/teacher/addPaper',
+            data:JSON.stringify({'paperName':paperName,'questions':questions}),
+            success:function(data,status){
+                console.log(data);
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown){
+                console.log(errorthrown);
+            }
+        });
+    }
+</script>
+</body>
+</html>
