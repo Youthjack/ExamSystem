@@ -7,6 +7,9 @@ public class ToManagerSee {
     private int id;
     private String username;
     private String identity;
+    private String name;
+    private String className;
+    private String email;
 
     public int getId() {
         return id;
@@ -30,5 +33,29 @@ public class ToManagerSee {
 
     public void setIdentity(String identity) {
         this.identity = identity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -18,15 +18,21 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByUsernameAndPassword(String username,String password);
     List<User> findAll();
 
-    @Query("select id,username,identity from User order by identity,id")
+    @Query("select id,username,identity from User order by id")
     List<User>findPartAll();
 
     @Modifying
     @Query("update User set password=:password,identity=:identity where username=:username")
+    @Transactional
     int updateUser(@Param("username")String username,@Param("password")String password,@Param("identity")String identity);
+
+    @Modifying
+    @Query("update User set password=:password where username=:username")
+    @Transactional
+    int updateUserByUsername(@Param("username")String username,@Param("password")String password);
 
     @Modifying
     @Query("delete from User where username=:username")
     @Transactional
-    void deleteUserByUsername(@Param("username")String username);
+    int deleteUserByUsername(@Param("username")String username);
 }

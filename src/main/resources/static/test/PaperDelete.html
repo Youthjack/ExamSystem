@@ -5,9 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post">
-    <input id="id" name="id" type="text">
-    <input id="paperName" name="paperName" type="text">
+<form action="/teacher/addPaper" method="post">
+    <input id="paperId" name="paperId" type="text">
     <input id="questions" name="questions" type="text">
     <input id="sub" type="button" onclick="mySub()">
 </form>
@@ -22,16 +21,15 @@
 <script src="../js/bootstrap-table.js"></script>
 <script>
     function mySub() {
-        var id=parseInt(document.getElementById('id').value);
-        var paperName=document.getElementById('paperName').value;
+        var Id=parseInt(document.getElementById('paperId').value);
         var questions=document.getElementById('questions').value;
         $.ajaxSetup({
             contentType:'application/json'
         });
         $.ajax({
             type:'POST',
-            url:'/teacher/updatePaper',
-            data:JSON.stringify({'id':id,'paperName':paperName,'questions':questions}),
+            url:'/teacher/deletePaper',
+            data:JSON.stringify({'id':Id,'questions':questions}),
             success:function(data,status){
                 console.log(data);
             },

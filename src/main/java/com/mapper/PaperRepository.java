@@ -14,7 +14,6 @@ import java.util.List;
  */
 public interface PaperRepository extends JpaRepository<Paper,Long>{
     List<Paper>findAll();
-
     Paper findById(int id);
 
     @Modifying
@@ -22,6 +21,12 @@ public interface PaperRepository extends JpaRepository<Paper,Long>{
     @Transactional
     int deletePaperById(@Param("id")int id);
 
-//    @Query("select a from Paper a,Question b,Paper_Question c where a.id=c.paperId and b.id=c.questionId")
-//    List<Paper>findAllPaperQuestion();
+    /*如何手动级联更新
+    @Modifying
+    @Query("update Paper a,Paper_Question b,Question c set b.question_id=:question_id where c.id=:question_id and " +
+            "a.id=b.paper_id and a.id=:paper_id")
+    int myUpdate(@Param("question_id")int question_id,@Param("paper_id")int paper_id);*/
+
+    /*@Query("select a from Paper a,Question b,Paper_Question c where a.Id=c.paperId and b.Id=c.questionId")
+    List<Paper>findAllPaperQuestion();*/
 }

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,8 +36,82 @@ public class TeacherController {
     StudentRepository studentRepository;
     @Autowired
     ProblemRepository problemRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
     ObjectMapper objectMapper=new ObjectMapper();
 
+    //添加跟更改都是这个接口
+    @RequestMapping(value = "/addStudents",method = RequestMethod.POST)
+    @ResponseBody
+    public String addStudent(@RequestBody String body)throws  JsonProcessingException{
+        Message message=new Message();
+        String json;
+        Teacher_Student teacher_student;
+        try{
+            teacher_student=objectMapper.readValue(body,Teacher_Student.class);
+        }catch (IOException e){
+            System.out.println(e);
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        if(teacher_student.getStudentsId()==null||teacher_student.getName()==null||
+                teacher_student.getEmail()==null||teacher_student.getNumber()==null){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        try {
+            String[] groups = teacher_student.getStudentsId().split("-");
+            List<Student> list = new ArrayList<Student>();
+            for (String s : groups) {
+                Student student = new Student();
+                student.setId(Integer.parseInt(s));
+                list.add(student);
+            }
+            Teacher teacher = new Teacher();
+            teacher.setId(teacher_student.getTeacherId());
+            teacher.setEmail(teacher_student.getEmail());
+            teacher.setName(teacher_student.getName());
+            teacher.setNumber(teacher_student.getNumber());
+            teacher.setStudentList(list);
+            teacherRepository.save(teacher);
+            message.setStatus("success");
+        }catch (Exception e){
+            System.out.println(e);
+            message.setStatus("error");
+        }
+        json=objectMapper.writeValueAsString(message);
+        return json;
+    }
+
+    @RequestMapping(value = "/seeStudents",method = RequestMethod.POST)
+    @ResponseBody
+    public String seeStudents(@RequestBody String body)throws JsonProcessingException{
+        Message message=new Message();
+        String json;
+        Teacher teacher=new Teacher();
+        try{
+            teacher=objectMapper.readValue(body,Teacher.class);
+        }catch (IOException e){
+            System.out.println(e);
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        try {
+            Teacher list =teacherRepository.findById(teacher.getId());
+            json=objectMapper.writeValueAsString(list);
+        }catch (Exception e){
+            System.out.println(e);
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+        }
+        return json;
+    }
+
+    //对数据库题目的操作
+    //对数据库题目的操作
     @RequestMapping("/addQuestion")
     @ResponseBody
     public String addQuestion(@RequestBody String body)throws JsonProcessingException{
@@ -97,9 +172,10 @@ public class TeacherController {
             return json;
         }
         try {
-            questionRepository.updateQuestion(question.getQuestion(),question.getAnswer(),question.getPoint(),
+            int s=questionRepository.updateQuestion(question.getQuestion(),question.getAnswer(),question.getPoint(),
                     question.getChapter(),question.getId());
-            message.setStatus("success");
+            if(s==1) message.setStatus("success");
+            else message.setStatus("error");
         }catch (Exception e){
             System.out.println("卡在数据库");
             message.setStatus("error");
@@ -127,16 +203,24 @@ public class TeacherController {
             return json;
         }
         try {
-            questionRepository.deleteQuestionById(question.getId());
+            Question q=new Question();
+            q.setId(question.getId());
+            questionRepository.delete(q);
             message.setStatus("success");
         }catch (Exception e){
+            System.out.println(e);
             message.setStatus("error");
         }
         json=objectMapper.writeValueAsString(message);
         return json;
     }
 
-    @RequestMapping("/addPaper")
+
+
+    //关于试卷的操作
+    //其实这里有个很严重的问题没有解决，把试卷显示到前端之后，假如这时有另外一个用户删除了一份试卷，这个用户要想再更新这份试卷
+    //是不可能的，会出现个很严重的问题，解决方法可以前端轮询，或者websocket
+    @RequestMapping(value = "/addPaper",method = RequestMethod.POST)
     @ResponseBody
     public String addPaper(@RequestBody String body)throws  JsonProcessingException{
         Paper paper;
@@ -155,33 +239,27 @@ public class TeacherController {
             return json;
         }
         try{
+            String[]groups=paper.getQuestions().split("-");
+            List<Question>list=new ArrayList<Question>();
+            for(int i=0;i<groups.length;i++){
+                System.out.println(groups[i]);
+                Question question=new Question();
+                question.setId(Integer.parseInt(groups[i]));
+                list.add(question);
+            }
+            paper.setQuestionSet(list);
             paperRepository.save(paper);
             message.setStatus("success");
         }catch (Exception e){
+            System.out.println(e);
             message.setStatus("error");
         }
         json=objectMapper.writeValueAsString(message);
         return json;
     }
 
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test() throws JsonProcessingException{
-
-       Set<Question> questionSet = new HashSet<Question>();
-        for(int i=0;i<26;i++) {
-            Question question = new Question();
-            question.setQuestion("a"+i);
-            questionSet.add(question);
-        }
-        Paper paper = new Paper();
-        paper.setPaperName("test");
-        paper.setQuestionSet(questionSet);
-        paperRepository.save(paper);
-        return objectMapper.writeValueAsString(paper);
-    }
-
-    @RequestMapping("/deletePaper")
+    //删除试卷时要级联删除paper_question
+    @RequestMapping(value = "/deletePaper",method = RequestMethod.POST)
     @ResponseBody
     public String deletePaper(@RequestBody String body)throws JsonProcessingException{
         Paper paper;
@@ -190,6 +268,7 @@ public class TeacherController {
         try{
             paper=objectMapper.readValue(body,Paper.class);
         }catch (IOException e){
+            System.out.println(e);
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
@@ -200,34 +279,73 @@ public class TeacherController {
             return json;
         }
         try{
-            paperRepository.deletePaperById(paper.getId());
+            paperRepository.delete(paper);
             message.setStatus("success");
         }catch (Exception e){
+            System.out.println(e);
             message.setStatus("error");
         }
         json=objectMapper.writeValueAsString(message);
         return json;
     }
 
-    //怎样查询两个表的数据并返回
-    @RequestMapping("/showAllPapers")
+    @RequestMapping(value = "/showAllPapers",method = RequestMethod.GET)
     @ResponseBody
     public String showAllPapers()throws JsonProcessingException{
         String json;
         Message message=new Message();
-        List<Paper>list=paperRepository.findAll();
         try{
+            List<Paper>list=paperRepository.findAll();
             json=objectMapper.writeValueAsString(list);
             message.setStatus("success");
             return json;
         } catch (Exception e){
+            System.out.println(e);
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
         }
     }
 
-    // 以文件csv的形式添加到数据库
+    @RequestMapping(value = "/updatePaper",method = RequestMethod.POST)
+    @ResponseBody
+    public String updatePaper(@RequestBody String body)throws JsonProcessingException{
+        String json;
+        Message message=new Message();
+        Paper paper;
+        try{
+            paper=objectMapper.readValue(body,Paper.class);
+        }catch (IOException e){
+            System.out.println(e);
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        if(paper.getId()==0||paper.getPaperName()==null||paper.getQuestions()==null){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        try {
+            String[] groups = paper.getQuestions().split("-");
+            List<Question> list = new ArrayList<Question>();
+            for (int i = 0; i < groups.length; i++) {
+                Question question = new Question();
+                question.setId(Integer.parseInt(groups[i]));
+                list.add(question);
+            }
+            paper.setQuestionSet(list);
+            paperRepository.save(paper);
+            message.setStatus("success");
+        }catch (Exception e){
+            System.out.println(e);
+            message.setStatus("error");
+        }
+        json=objectMapper.writeValueAsString(message);
+        return json;
+    }
+
+    // 以文件csv的形式添加问题到数据库
     //repository.save自带更新功能
     @RequestMapping(value = "/batchAddQuestions",method = RequestMethod.POST)
     @ResponseBody
@@ -243,12 +361,12 @@ public class TeacherController {
                 String ques=reader.get(0);
                 String ans=reader.get(1);
                 int point=Integer.parseInt(reader.get(2));
-                String chapter=reader.get(3);
+                String session=reader.get(3);
                 int type=Integer.parseInt(reader.get(4));
                 question.setAnswer(ans);
                 question.setQuestion(ques);
                 question.setPoint(point);
-                question.setChapter(chapter);
+                question.setChapter(session);
                 question.setType(type);
                 questionRepository.save(question);
             }

@@ -2,8 +2,15 @@ package com.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonModel.FromLogin;
+import com.jsonModel.LoginReturn;
+import com.mapper.StudentRepository;
+import com.mapper.TeacherRepository;
 import com.mapper.UserRepository;
+import com.model.Student;
+import com.model.Teacher;
 import com.model.User;
+import com.model.basicEnum.IdentifyType;
 import com.util.LoginAuthModel;
 import com.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +28,52 @@ import java.util.UUID;
 public class LoginController {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
+    @Autowired
+    StudentRepository studentRepository;
 
     ObjectMapper objectMapper=new ObjectMapper();
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(){
-//            System.out.println("redistemplate不为空");
-//            System.out.println("redistemplate为空");
-        return "Login";
+
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public String login(@RequestBody FromLogin fromLogin) throws JsonProcessingException {
+        String username = fromLogin.getUsername();
+        String password = fromLogin.getPassword();
+        LoginReturn loginReturn = new LoginReturn();
+        User user = userRepository.findByUsernameAndPassword(username,password);
+        if(null == user) {
+            loginReturn.setStatus("username or password error");
+        } else {
+            String idty = user.getIdentity();
+            loginReturn.setIdty(idty);
+            if(idty.equals(IdentifyType.STUDENT)) {
+                Student student = studentRepository.findByNumber(username);
+                if(null == student) {
+                    loginReturn.setName(student.getName());
+                    loginReturn.setClassName(student.getClassName());
+                    loginReturn.setId(student.getId());
+                    loginReturn.setStatus("success");
+                } else {
+                    loginReturn.setStatus("student cannot find");
+                }
+            } else if(idty.equals(IdentifyType.TEACHER)) {
+                Teacher teacher = teacherRepository.findByNumber(username);
+                if(null == teacher) {
+                    loginReturn.setName(teacher.getName());
+                    loginReturn.setEmail(teacher.getEmail());
+                    loginReturn.setId(teacher.getId());
+                    loginReturn.setStatus("success");
+                } else {
+                    loginReturn.setStatus("teacher cannot find");
+                }
+            } else if(idty.equals(IdentifyType.ADMIN)) {
+                loginReturn.setStatus("success");
+            }
+        }
+        return objectMapper.writeValueAsString(loginReturn);
     }
 
     /*

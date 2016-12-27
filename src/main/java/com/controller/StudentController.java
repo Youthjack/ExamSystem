@@ -5,15 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsonModel.FinishExam;
 import com.jsonModel.Message;
 import com.jsonModel.PostExam;
-import com.mapper.ExamRepository;
-import com.mapper.PaperRepository;
-import com.mapper.ProblemRepository;
-import com.mapper.StudentRepository;
+import com.mapper.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,6 +20,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ExamRepository examRepository;
     @Autowired
@@ -32,6 +32,54 @@ public class StudentController {
     ProblemRepository problemRepository;
     ObjectMapper objectMapper=new ObjectMapper();
     Map<Integer,Question> questionMap = new HashMap<Integer, Question>();
+
+    @RequestMapping(value = "/info",method = RequestMethod.POST)
+    @ResponseBody
+    public String info(@RequestBody String body)throws JsonProcessingException{
+        Student student;
+        String json;
+        Message message=new Message();
+        try{
+            student=objectMapper.readValue(body,Student.class);
+        }catch (IOException e){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        if(student.getId()==0){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        Student student1=studentRepository.findById(student.getId());
+        json=objectMapper.writeValueAsString(student1);
+        return json;
+    }
+
+    @RequestMapping(value = "/changePwd",method = RequestMethod.POST)
+    @ResponseBody
+    public String changePwd(@RequestBody String body)throws JsonProcessingException{
+        User user;
+        String json;
+        Message message=new Message();
+        try{
+            user=objectMapper.readValue(body,User.class);
+        }catch (IOException e){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        if(user.getUsername()==null||user.getPassword()==null){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        int s=userRepository.updateUserByUsername(user.getUsername(),user.getPassword());
+        if(s==1)    message.setStatus("success");
+        else    message.setStatus("error");
+        json=objectMapper.writeValueAsString(message);
+        return json;
+    }
 
     @RequestMapping(value = "/getExams/{sid}/{pid}",method = RequestMethod.GET)
     @ResponseBody
@@ -67,7 +115,7 @@ public class StudentController {
             } else {
                 List<String> list = finishExam.getAnswerList();
                 Paper paper = exam.getPaper();
-                Set<Question> questionSet = paper.getQuestionSet();
+                List<Question> questionSet = paper.getQuestionSet();
                 if(questionSet==null) {
                     msg.setStatus("no question set");
                 } else {

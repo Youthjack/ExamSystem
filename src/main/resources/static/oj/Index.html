@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>数据库oj</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/datepicker3.css" rel="stylesheet">
+    <link href="../css/bootstrap-table.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+
+
+</head>
+<body >
+    <div class="container">
+        <div class="row">
+            <table class="table" data-show-refresh="true">
+                <caption>Optional table caption</caption>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th >Id</th>
+                        <th >Title</th>
+                        <th >Acceptance</th>
+                        <th >Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/chart.min.js"></script>
+    <script src="../js/chart-data.js"></script>
+    <script src="../js/easypiechart.js"></script>
+    <script src="../js/easypiechart-data.js"></script>
+    <script src="../js/bootstrap-datepicker.js"></script>
+    <script src="../js/bootstrap-table.js"></script>
+    <script>
+        function myClick(e) {
+            console.log("表示点击了这个按钮");
+            console.log(e);
+            console.log(e.text);
+            var id=parseInt(e.text);
+            window.location.href="/oj/submit?id="+id;
+        }
+    </script>
+    <script>
+        $('tbody tr').on('click',function (e) {
+            console.log(e);
+            window.location.href("")
+        })
+        $(window).load(function () {
+            $.ajax({
+                type:'get',
+                url:'/oj/get',
+                success:function (data1,status) {
+                    console.log(data1);
+                    var data=eval("("+data1+")");
+                    var length=0;
+                    for(dd in data)
+                        length++;
+                    console.log("length:"+length);
+                    var tbodyContent=document.getElementById('tbody');
+                    for(var i=0;i<length;i++) {
+                        tbodyContent.innerHTML+='<tr><td></td><td><a type="button" class="btn btn-default"'
+                                + 'onclick="myClick(this)">'+data[i]['id']+'</a></td><td>'+data[i]['title']+'</td>'+ '<td>'+data[i]['acceptance']+'</td>'+
+                                '<td>'+data[i]['difficulty']+'</td></tr>';
+                    }
+
+                },
+                error:function (xmlhttprequest,textstatus,errorthrown) {
+                    console.log(errorthrown);
+                }
+            })
+        });
+    </script>
+</body>
+</html>

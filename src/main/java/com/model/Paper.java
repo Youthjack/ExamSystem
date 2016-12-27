@@ -3,6 +3,7 @@ package com.model;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,7 +24,7 @@ public class Paper {
             joinColumns = {@JoinColumn(name = "paperId",referencedColumnName = "id")},
             inverseJoinColumns ={@JoinColumn(name = "questionId",referencedColumnName = "id")}
     )
-    private Set<Question> questionSet;
+    private List<Question> questionSet;
 
     @OneToMany(mappedBy = "paper",fetch = FetchType.EAGER)
     private Set<Exam> examSet;
@@ -31,7 +32,7 @@ public class Paper {
 
     public Paper() {}
 
-    public Paper(String paperName, String questions, Set<Question> questionSet) {
+    public Paper(String paperName, String questions, List<Question> questionSet) {
         this.paperName = paperName;
         this.questions = questions;
         this.questionSet = questionSet;
@@ -61,12 +62,12 @@ public class Paper {
         this.questions = questions;
     }
 
-    public Set<Question> getQuestionSet() {
-        return questionSet;
+    public void setQuestionSet(List<Question> questionSet) {
+        this.questionSet = questionSet;
     }
 
-    public void setQuestionSet(Set<Question> questionSet) {
-        this.questionSet = questionSet;
+    public List<Question> getQuestionSet() {
+        return questionSet;
     }
 
     public void setExamSet(Set<Exam> examSet) {

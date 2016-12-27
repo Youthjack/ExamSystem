@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>修改试卷</title>
 </head>
 <body>
 <form method="post">
-    <input id="id" name="id" type="text">
-    <input id="paperName" name="paperName" type="text">
-    <input id="questions" name="questions" type="text">
+    <input id="id" name="id" type="text" placeholder="id">
+    <input id="paperName" name="paperName" type="text" placeholder="paper_name">
+    <input id="questions" name="questions" type="text" placeholder="questions">
     <input id="sub" type="button" onclick="mySub()">
 </form>
 
-<script src="../js/jquery-1.11.1.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/chart.min.js"></script>
-<script src="../js/chart-data.js"></script>
-<script src="../js/easypiechart.js"></script>
-<script src="../js/easypiechart-data.js"></script>
-<script src="../js/bootstrap-datepicker.js"></script>
-<script src="../js/bootstrap-table.js"></script>
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/chart.min.js"></script>
+<script src="../../js/chart-data.js"></script>
+<script src="../../js/easypiechart.js"></script>
+<script src="../../js/easypiechart-data.js"></script>
+<script src="../../js/bootstrap-datepicker.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
 <script>
     function mySub() {
         var id=parseInt(document.getElementById('id').value);

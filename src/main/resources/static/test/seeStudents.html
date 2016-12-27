@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post">
+<form action="/teacher/seeStudents" method="post">
     <input id="id" name="id" type="text">
     <input id="paperName" name="paperName" type="text">
     <input id="questions" name="questions" type="text">
@@ -30,8 +30,8 @@
         });
         $.ajax({
             type:'POST',
-            url:'/teacher/updatePaper',
-            data:JSON.stringify({'id':id,'paperName':paperName,'questions':questions}),
+            url:'/teacher/seeStudents',
+            data:JSON.stringify({'id':id}),
             success:function(data,status){
                 console.log(data);
             },

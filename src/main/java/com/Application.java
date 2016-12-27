@@ -1,7 +1,11 @@
 package com;
 
 import com.interceptor.AuthorizationInterceptor;
+import com.mapper.StudentRepository;
+import com.mapper.TeacherRepository;
 import com.mapper.UserRepository;
+import com.model.Student;
+import com.model.Teacher;
 import com.model.User;
 import com.model.basicEnum.IdentifyType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,10 @@ import java.util.concurrent.TimeUnit;
 public class Application extends WebMvcConfigurerAdapter implements CommandLineRunner{
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    StudentRepository studentRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer(){
         return new EmbeddedServletContainerCustomizer() {
@@ -62,11 +70,20 @@ public class Application extends WebMvcConfigurerAdapter implements CommandLineR
         if(userRepository.findByUsername("admin") != null) {
             return;
         }
-        User student = new User("student", "123456", IdentifyType.STUDENT);
-        User teacher = new User("teacher", "123456", IdentifyType.TEACHER);
-        User admin = new User("admin", "123456", IdentifyType.ADMIN);
-        userRepository.save(student);
-        userRepository.save(teacher);
-        userRepository.save(admin);
+        User u1 = new User("233", "123456", IdentifyType.STUDENT);
+        User u2 = new User("666", "123456", IdentifyType.TEACHER);
+        User u3 = new User("admin", "123456", IdentifyType.ADMIN);
+        Student student = new Student();
+        student.setNumber(u1.getUsername());
+        student.setName("学生");
+        student.setClassName("网工");
+        Teacher teacher = new Teacher();
+        teacher.setNumber(u2.getUsername());
+        teacher.setName("老师");
+        userRepository.save(u1);
+        studentRepository.save(student);
+        userRepository.save(u2);
+        teacherRepository.save(teacher);
+        userRepository.save(u3);
     }
 }
