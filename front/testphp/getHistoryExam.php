@@ -1,6 +1,5 @@
 <?php
 	$d = array(
-		'num' => 3,
 		'1' => array(
 			'type' => '0',
 			'title' => '数据库的老师叫什么名字？',

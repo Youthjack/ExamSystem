@@ -28,3 +28,8 @@
 	cursor: pointer;
 }
 
+#message{
+	position: fixed;
+	margin-top: 10px;
+	width: 300px;
+}

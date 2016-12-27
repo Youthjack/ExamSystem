@@ -10,7 +10,7 @@ $(document).ready(function() {
 	func_hover('#history', '历史', '历史2');
 	func_hover('#info', '个人信息', '个人信息2');
 
-	// ？？ 功能界面，用于ajax刷新内容
+	// 功能界面，用于ajax刷新内容
 	$('#exam').on('click', function() {
 		window.location.href = 'student_exam.html';
 	});

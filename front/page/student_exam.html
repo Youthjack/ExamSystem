@@ -59,22 +59,21 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="student_func.html">首页</a></li>
-            <li><a href="#">进入考试</a></li>
-            <li class="active"><a href="#">相关知识</a></li>
+            <li class="active"><a href="#">进入考试</a></li>
+            <li><a href="student_review.html">相关知识</a></li>
             <li><a href="student_history.html">历史考试</a></li>
             <li><a href="student_info.html">个人信息</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 class="page-header">各章节的小结：</h2>
+          <h2 class="page-header">点击进入考试：</h2>
           <!--选择图标-->
           <table id="chapter_table" class="table table-striped">
             <thead>
-              <tr><th>#</th><th>章节</th><th>内容</th><th>链接</th></tr>
+              <tr><th>#</th><th>试卷名</th><th>考试时间</th><th>进入考试</th></tr>
             </thead>
-            <tbody>
-              <tr><th>1</th><th>第一章</th><th>绪论</th>
-              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+            <tbody id="table_content">
+              <!-- <tr><th>#</th><th>试卷名</th><th>考试时间</th><th>进入考试</th></tr> -->
             </tbody>
           </table>
         </div>

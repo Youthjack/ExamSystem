@@ -1,38 +1,65 @@
 $(document).ready(function() {
 	set_info();
-
-	var ajaxUrl = '../testphp/getHistoryExamList.php';
-
-	var id = $.cookie('id');
+	//test();
+	var sid = $.cookie('id');
+	//var ajaxUrl = '../testphp/getHistoryExamList.php';
+	var ajaxUrl = '/student/getExams/' + sid + '/0';
 	$.ajax({
 		url: ajaxUrl,
-		type: 'post',
-		data: {id: id},
+		type: 'get',
 		success: function(data) {
 			var d = eval("(" + data + ")");
-			if(d.state == "0") {
-				$('#history_exam').html("");
-				var str = "";
+			var num = 0; // 获取数据数
+			for (dd in d) {
+				num += 1;
+			}
 
-				for(var i=0; i<d.num % 3; i++) {
-					var btn_id = id + '_' + d[i*3];
-					var tmp = '<tr>' +
-                				'<th>' + i + '</th>' +
-                				'<th>' + d[i*3+0] + '</th>' +
-                				'<th>' + d[i*3+1] + '</th>' +
-                				'<th>' + d[i*3+2] + '</th>' +
-                				'<th><button id="' + btn_id + '" type="button" class="btn btn-primary" data-toggle="modal"' + 
-                				' data-target="#myModal">click</button></th>' +
-              				'</tr>';
-              		str += tmp;
+			var table_content = "";
+			$('#history_exam').html(table_content);
+			for (var i=0; i<num; i++) {
+				s_i = i.toString();
+				var cnt = 0;
+				// 三个时间的字符串表示
+				var now_time = new Date();
+				now_time = now_time.toLocaleString();
+				var start_time = getEndTime(d[s_i]['date'], 0);
+				var end_time = getEndTime(d[s_i]['date'], d[s_i]['timeSec']);
+
+				// 三个时间的时间戳表示
+				var now_ts = Date.parse(new Date()) / 1000;
+				//var start_ts = Date.parse(new Date(d[s_i]['date'] / 1000;
+				var start_ts = d[s_i]['date'] / 1000;
+				var end_ts = start_ts + d[s_i]['timeSec'];
+
+				// 如果过了试卷的结束时间
+				if (now_ts > end_ts) {
+					cnt += 1;
+					if (d[s_i]['status'] == 0) { //如果该名考生没考试
+						var btn_id = d[s_i]['pk'][0] + '_' + d[s_i]['pk'][1];
+						table_content += '<tr>' + 
+                							'<th>' + cnt.toString() + '</th>' + 
+                							'<th>' + d[s_i]['name'] + '</th>' +
+                							'<th>' + start_time + '&emsp;到&emsp;' + end_time + '</th>' +
+                							'<th>0</th>' + 
+                							'<th><button id="' + btn_id + '" class="btn btn-danger btn-sm" disabled="true">未曾考试</button></th>' + 
+             							'</tr>';
+					}
+					if (d[s_i]['status'] == 1) { //如果该名考生考了试
+						var btn_id = d[s_i]['pk'][0] + '_' + d[s_i]['pk'][1];
+						table_content += '<tr>' + 
+                							'<th>' + cnt.toString() + '</th>' + 
+                							'<th>' + d[s_i]['name'] + '</th>' +
+                							'<th>' + start_time + '&emsp;到&emsp;' + end_time + '</th>' +
+                							'<th>' + d[s_i]['mark'] + '</th>' + 
+                							'<th><button id="' + btn_id + '" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">查看试卷</button></th>' + 
+             							'</tr>';
+					}
 				}
-				$('#history_exam').html(str);
-			}
-			else {
-				//alert('修改失败！');
-			}
+
+			} // end for
+			$('#history_exam').html(table_content);
 		}
-	}, 'json');
+	}, 'json'); // 历史列表渲染完毕
 
 	$('#history_exam').on('click', 'button', function(e) {
 		var btn_id = e.target.id.split('_');
@@ -54,8 +81,13 @@ $(document).ready(function() {
 				var modal_content_string = "";
 				var modal_situ_string = "";
 
+				var num = 0;
+				for (dd in d) {
+					num += 1;
+				}
+
 				var d = eval("(" + data + ")");
-				for(var i=1; i < d['num']+1; i++) {
+				for(var i=1; i < num+1; i++) {
 					var t = i.toString();
 					//console.log(d[t]['type']);
 					if(d[t]['type'] == '0') { //选择题
@@ -70,7 +102,7 @@ $(document).ready(function() {
               									'<div class="panel-body">' +
                 								'<p>' + d[t]['title'] + '</p>' +
               									'</div>' +
-              									'<div class="btn btn-group">';
+              									'<div class="btn-group">';
               			for(var j=0; j<4; j++) { //选择项的渲染
               				if (isRight) { // 如果做对了
               					if (j == rightAnswer) {
@@ -131,7 +163,7 @@ function set_info() {
 	// 从cookie取出信息渲染页面
 	var name = $.cookie('name');
 	var className = $.cookie('className');
-	var id = $.cookie('id');
+	var id = $.cookie('studyid');
 	var idty = $.cookie('idty');
 
 	$('#stu_id').text(id);
@@ -139,6 +171,16 @@ function set_info() {
 	$('#stu_name2').text(name);
 	$('#stu_class').text(className);
 	$("#identity").text(idty);
+}
+
+function getEndTime(start_time, timeSec) {
+	//var now_ts = Date.parse(new Date(start_time));
+	var now_ts = start_time;
+	var end_ts = now_ts / 1000 + timeSec;
+	
+	var newDate = new Date();
+	newDate.setTime(end_ts * 1000);
+	return newDate.toLocaleString();
 }
 
 function changeABCDtoInt(ABCD) {
@@ -177,4 +219,9 @@ function changeInttoABCD(i) {
 		break;
 	}
 	return ABCD;
+}
+
+function test() {
+	var end_time = getEndTime(1482847704000, 1800);
+	console.log(end_time);
 }

@@ -12,12 +12,13 @@ $(document).ready(function() {
 			return false;
 		}
 
-		var id = $.cookie('id');
-		var ajaxUrl = "../testphp/changePswd.php";
+		var studyid = $.cookie('studyid');
+		//var ajaxUrl = "../testphp/changePswd.php";
+		var ajaxUrl = "/student/changePswd"
 		$.ajax({
 			url: ajaxUrl,
 			type: 'post',
-			data: {id: id, oldpswd: oldpswd, newpswd: newpswd},
+			data: {username: studyid, beforePassword: oldpswd, password: newpswd},
 			success: function(data) {
 				var d = eval("(" + data + ")");
 				if(d.state == "0") {
@@ -38,10 +39,10 @@ function set_info() {
 	// 从cookie取出信息渲染页面
 	var name = $.cookie('name');
 	var className = $.cookie('className');
-	var id = $.cookie('id');
+	var studyid = $.cookie('studyid'); // 学号
 	var idty = $.cookie('idty');
 
-	$('#stu_id').text(id);
+	$('#stu_id').text(studyid);
 	$('#stu_name').text(name);
 	$('#stu_name2').text(name);
 	$('#stu_class').text(className);

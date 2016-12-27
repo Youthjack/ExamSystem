@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>开始考试</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/student_func.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span class="navbar-title-strong"><span id="exam_name">NULL</span></span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="white-font"></span></a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9"><!--中间题目板-->
+          <p></p>
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <div style="text-align: center;"><h3><strong>考生须知</strong></h3></div>
+            <p>1.本次考试形式采用闭卷方式</p>
+            <p>2.请各位同学抓紧时间考试</p>
+            <p>3.请自觉遵守考场纪律</p>
+            <p>4.填空题，只要填写最终的作答结果，不用填写解答过程，多个填空位请在答题区标明答案对应的序号</p>
+            <p>本次考试总共&emsp;<span id="all_question"></span>&emsp;题，合计&emsp;<span id="all_score"></span>&emsp;分。</p>
+          </div>
+
+          <div id="question_content">
+<!--             <div id="t1 " class="panel panel-default">
+              <div class="panel-heading">1</div>
+              <div class="panel-body">
+                <p>1+1=?</p>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-success">A</button>
+                <button class="btn btn-default">B</button>
+                <button class="btn btn-default">C</button>
+                <button class="btn btn-default">D</button>
+              </div>
+            </div>
+
+            <div id="t2" class="panel panel-default">
+              <div class="panel-heading">1</div>
+              <div class="panel-body">
+                <p>1+1=?</p>
+              </div>
+              <textarea style="width: 500px;" placeholder="输入你的答案"></textarea>
+            </div> -->
+
+          </div>
+
+          <!-- <p style="margin-top:1000px;">1</p> -->
+        </div>
+
+        <div class="col-md-3"><!--侧边信息板-->
+          <div id="message" class="panel panel-primary">
+            <div class="panel-heading">考试信息</div>
+            <ul class="list-group">
+              <li class="list-group-item">姓名：<span id="message_name">NULL</span></li>
+              <li class="list-group-item">班级：<span id="message_class">NULL</span></li>
+              <li class="list-group-item">学号：<span id="message_studyid">NULL</span></li>
+            </ul>
+            <div id="message_button_list" class="panel-body">
+                <!-- <button class="btn btn-default">1</button> -->
+            </div>
+            <div class="panel-footer">
+            考试还剩：<span id="leftTime" style="color: red;">00:00:00</span>
+            <button id="exam_submit" class="btn btn-danger">提交</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../public/jquery/jquery-3.1.0.min.js"></script>
+    <script src="../public/jquery/jquery.cookie.js"></script>
+
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../public/ie10-viewport-bug-workaround.js"></script>
+
+    <script src="../js/student_func.js"></script>
+    <script src="../js/exam.js"></script>
+  </body>
+</html>
