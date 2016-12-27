@@ -3,12 +3,10 @@ package com.controller;
 import com.csvreader.CsvReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonModel.CorrectExam;
 import com.jsonModel.PostExam;
 import com.jsonModel.Message;
-import com.mapper.ExamRepository;
-import com.mapper.PaperRepository;
-import com.mapper.QuestionRepository;
-import com.mapper.StudentRepository;
+import com.mapper.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +33,8 @@ public class TeacherController {
     ExamRepository examRepository;
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    ProblemRepository problemRepository;
     ObjectMapper objectMapper=new ObjectMapper();
 
     @RequestMapping("/addQuestion")
@@ -260,9 +260,9 @@ public class TeacherController {
         return json;
     }
 
-    @RequestMapping(value = "/postExam",method = RequestMethod.POST,consumes = "application/json",produces = "application/json")
+    @RequestMapping(value = "/postExam",method = RequestMethod.POST)
     @ResponseBody
-    public String postExam(PostExam postExam) throws JsonProcessingException {
+    public String postExam(@RequestBody PostExam postExam) throws JsonProcessingException {
         Message msg = new Message();
         String json;
         if(postExam==null) {
@@ -287,11 +287,52 @@ public class TeacherController {
                 exam.setStudent(student);
                 exam.setPaper(paper);
                 exam.setDate(postExam.getDate());
+                exam.setTimeSec(postExam.getTimeSec());
                 examRepository.save(exam);
                 msg.setStatus("success");
                 json = objectMapper.writeValueAsString(msg);
             }
         }
         return json;
+    }
+
+    @RequestMapping(value = "/correctExam",method = RequestMethod.POST)
+    @ResponseBody
+    public String correctExam(@RequestBody CorrectExam correctExam) throws JsonProcessingException {
+        Message msg = new Message();
+        if(correctExam==null) {
+            msg.setStatus("param cannot be null!");
+        } else {
+            int paperId = correctExam.getPaperId();
+            int studentId = correctExam.getStudentId();
+            Exam exam = examRepository.findByPk(new StudentPaperPk(studentId,paperId));
+            if(exam == null) {
+                msg.setStatus("exam cannot find!");
+            } else {
+                int mark = exam.getMark();
+                List<Integer> qidList = correctExam.getQuestionIdList();
+                List<Integer> markList = correctExam.getMarkList();
+                if(qidList==null||markList==null||qidList.size()!=markList.size()) {
+                    msg.setStatus("param fault");
+                } else {
+                    for (int i=0;i<qidList.size();i++) {
+                        ProblemPk pk = new ProblemPk(paperId, studentId, qidList.get(i));
+                        Problem problem = problemRepository.findByPk(pk);
+                        if (null == problem) {
+                            msg.setStatus("problem cannot find!");
+                        } else {
+                            int m = markList.get(i);
+                            problem.setMark(m);
+                            problemRepository.save(problem);
+                            mark += m;
+                        }
+                    }
+                }
+                exam.setMark(mark);
+                examRepository.save(exam);
+                msg.setStatus("success");
+            }
+        }
+        return objectMapper.writeValueAsString(msg);
     }
 }

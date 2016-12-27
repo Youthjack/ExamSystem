@@ -22,7 +22,7 @@ public class Question {
     @Column
     private String chapter;
     @Column
-    private int type;
+    private int type;   //1选择题，2问答题
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.LAZY,

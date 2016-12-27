@@ -10,6 +10,7 @@ public class PostExam {
     private int studentId;
     private String name;
     private Date date;
+    int timeSec;
 
     public Date getDate() {
         return date;
@@ -49,4 +50,11 @@ public class PostExam {
         return studentId;
     }
 
+    public int getTimeSec() {
+        return timeSec;
+    }
+
+    public void setTimeSec(int timeSec) {
+        this.timeSec = timeSec;
+    }
 }

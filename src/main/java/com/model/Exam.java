@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jack on 2016/12/23.
@@ -21,9 +22,6 @@ public class Exam {
     private int timeSec;
 
     @Column
-    private String result;
-
-    @Column
     private Date date;
 
     @JsonIgnore
@@ -37,7 +35,10 @@ public class Exam {
     private Paper paper;
 
     @Column
-    private int status = 0;
+    private int status = 0;     //0表示还没做，1表示已交卷
+
+    @Column
+    private int hasCorrect = 0; //0表示还没改，1表示已改
 
     @Column
     private int mark = 0;
@@ -66,13 +67,10 @@ public class Exam {
         this.timeSec = timeSec;
     }
 
-    public String getResult() {
-        return result;
+    public int getHasCorrect() {
+        return hasCorrect;
     }
 
-    public void setResult(String result) {
-        this.result = result;
-    }
 
     public Date getDate() {
         return date;
@@ -121,4 +119,10 @@ public class Exam {
     public void setMark(int mark) {
         this.mark = mark;
     }
+
+
+    public void setHasCorrect(int hasCorrect) {
+        this.hasCorrect = hasCorrect;
+    }
+
 }

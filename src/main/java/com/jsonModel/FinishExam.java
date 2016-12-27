@@ -11,7 +11,6 @@ public class FinishExam {
     int studentId;
     List<String> answerList = new ArrayList<String>();
     List<Integer> idList = new ArrayList<Integer>();
-    int timeSec;
 
     public void setPaperId(int paperId) {
         this.paperId = paperId;
@@ -25,9 +24,6 @@ public class FinishExam {
         this.answerList = answerList;
     }
 
-    public void setTimeSec(int timeSec) {
-        this.timeSec = timeSec;
-    }
 
     public int getPaperId() {
 
@@ -42,9 +38,6 @@ public class FinishExam {
         return answerList;
     }
 
-    public int getTimeSec() {
-        return timeSec;
-    }
 
     public List<Integer> getIdList() {
         return idList;
