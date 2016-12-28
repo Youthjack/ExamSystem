@@ -12,6 +12,7 @@ import com.mapper.TeacherRepository;
 import com.mapper.UserRepository;
 import com.model.Student;
 import com.model.Teacher;
+import com.model.Teacher_Student;
 import com.model.User;
 import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +62,11 @@ public class ManagerController {
             obj.setUsername(user.getUsername());
             obj.setIdentity(user.getIdentity());
             if(user.getIdentity().equals("学生")) {
-                Student student=studentRepository.findByName(user.getUsername());
+                Student student=studentRepository.findByNumber(user.getUsername());
                 obj.setName(student.getName());
                 obj.setClassName(student.getClassName());
             }else if(user.getIdentity().equals("老师")){
-                Teacher teacher=teacherRepository.findByName(user.getUsername());
+                Teacher teacher=teacherRepository.findByNumber(user.getUsername());
                 obj.setName(teacher.getName());
                 obj.setClassName(teacher.getEmail());
             }else if(user.getIdentity().equals("管理员")){
@@ -87,7 +88,6 @@ public class ManagerController {
             CsvReader reader=new CsvReader(file.getInputStream(),',', Charset.forName("GBK"));
             reader.readHeaders();
             while(reader.readRecord()){
-
                 String username=reader.get(0);
                 String password=reader.get(1);
                 String identity=reader.get(2);
@@ -261,6 +261,50 @@ public class ManagerController {
             }
             message.setStatus("success");
         }catch (Exception e){
+            message.setStatus("error");
+        }
+        json=objectMapper.writeValueAsString(message);
+        return json;
+    }
+
+    @RequestMapping(value = "/addStudents",method = RequestMethod.POST)
+    @ResponseBody
+    public String addStudent(@RequestBody String body)throws  JsonProcessingException{
+        Message message=new Message();
+        String json;
+        Teacher_Student teacher_student;
+        try{
+            teacher_student=objectMapper.readValue(body,Teacher_Student.class);
+        }catch (IOException e){
+            System.out.println(e);
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        if(teacher_student.getStudentsId()==null||teacher_student.getName()==null||
+                teacher_student.getEmail()==null||teacher_student.getNumber()==null){
+            message.setStatus("error");
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        try {
+            String[] groups = teacher_student.getStudentsId().split("-");
+            List<Student> list = new ArrayList<Student>();
+            for (String s : groups) {
+                Student student = new Student();
+                student.setId(Integer.parseInt(s));
+                list.add(student);
+            }
+            Teacher teacher = new Teacher();
+            teacher.setId(teacher_student.getTeacherId());
+            teacher.setEmail(teacher_student.getEmail());
+            teacher.setName(teacher_student.getName());
+            teacher.setNumber(teacher_student.getNumber());
+            teacher.setStudentList(list);
+            teacherRepository.save(teacher);
+            message.setStatus("success");
+        }catch (Exception e){
+            System.out.println(e);
             message.setStatus("error");
         }
         json=objectMapper.writeValueAsString(message);

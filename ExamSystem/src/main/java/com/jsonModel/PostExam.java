@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class PostExam {
     private int paperId;
-    private String studentsId;
+    private String className;
     private String name;
     private Date date;
 
@@ -29,22 +29,19 @@ public class PostExam {
         return name;
     }
 
-
-
     public void setPaperId(int paperId) {
         this.paperId = paperId;
     }
-
-    public void setStudentsId(String studentsId) {
-        this.studentsId = studentsId;
-    }
-
 
     public int getPaperId() {
         return paperId;
     }
 
-    public String getStudentsId() {
-        return studentsId;
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

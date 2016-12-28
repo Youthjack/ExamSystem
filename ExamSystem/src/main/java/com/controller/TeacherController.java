@@ -45,49 +45,6 @@ public class TeacherController {
     ObjectMapper objectMapper=new ObjectMapper();
 
     //添加跟更改都是这个接口
-    @RequestMapping(value = "/addStudents",method = RequestMethod.POST)
-    @ResponseBody
-    public String addStudent(@RequestBody String body)throws  JsonProcessingException{
-        Message message=new Message();
-        String json;
-        Teacher_Student teacher_student;
-        try{
-            teacher_student=objectMapper.readValue(body,Teacher_Student.class);
-        }catch (IOException e){
-            System.out.println(e);
-            message.setStatus("error");
-            json=objectMapper.writeValueAsString(message);
-            return json;
-        }
-        if(teacher_student.getStudentsId()==null||teacher_student.getName()==null||
-                teacher_student.getEmail()==null||teacher_student.getNumber()==null){
-            message.setStatus("error");
-            json=objectMapper.writeValueAsString(message);
-            return json;
-        }
-        try {
-            String[] groups = teacher_student.getStudentsId().split("-");
-            List<Student> list = new ArrayList<Student>();
-            for (String s : groups) {
-                Student student = new Student();
-                student.setId(Integer.parseInt(s));
-                list.add(student);
-            }
-            Teacher teacher = new Teacher();
-            teacher.setId(teacher_student.getTeacherId());
-            teacher.setEmail(teacher_student.getEmail());
-            teacher.setName(teacher_student.getName());
-            teacher.setNumber(teacher_student.getNumber());
-            teacher.setStudentList(list);
-            teacherRepository.save(teacher);
-            message.setStatus("success");
-        }catch (Exception e){
-            System.out.println(e);
-            message.setStatus("error");
-        }
-        json=objectMapper.writeValueAsString(message);
-        return json;
-    }
 
     @RequestMapping(value = "/seeStudents",method = RequestMethod.POST)
     @ResponseBody
@@ -360,7 +317,6 @@ public class TeacherController {
             reader.readHeaders();
             while(reader.readRecord()){
                 Question question=new Question();
-                System.out.println(reader.get(1)+" "+reader.get(2));
                 String ques=reader.get(0);
                 String ans=reader.get(1);
                 int point=Integer.parseInt(reader.get(2));
@@ -400,17 +356,17 @@ public class TeacherController {
             json = objectMapper.writeValueAsString(msg);
             return json;
         } else {
-            if(postExam.getDate()==null||postExam.getName()==null||postExam.getPaperId()==0||postExam.getStudentsId()==null){
+            if(postExam.getDate()==null||postExam.getName()==null||postExam.getPaperId()==0||postExam.getClassName()==null){
                 msg.setStatus("error");
                 json=objectMapper.writeValueAsString(msg);
                 return json;
             }
-            String[]sids = postExam.getStudentsId().split("-");
+            List<Student>list=studentRepository.findByClassName(postExam.getClassName());
             int pid = postExam.getPaperId();
-            for(int i=0;i<sids.length;i++) {
+            for(int i=0;i<list.size();i++) {
                 int sid;
                 try {
-                    sid = Integer.valueOf(sids[i]);
+                    sid = list.get(i).getId();
                 }catch (Exception e){
                     System.out.println(e);
                     msg.setStatus("error");

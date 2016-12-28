@@ -6,7 +6,7 @@
 </head>
 <body>
 <form method="post">
-    <input id="studentsId" name="studentsId" type="text" placeholder="studentsId">
+    <input id="className" name="className" type="text" placeholder="className">
     <input id="paperId" name="paperId" type="text" placeholder="paperId">
     <input id="name" name="name" type="text" placeholder="name">
     <input id="date" name="date" type="text" placeholder="date">
@@ -23,7 +23,7 @@
 <script src="../../js/bootstrap-table.js"></script>
 <script>
     function mySub() {
-        var studentsId=document.getElementById('studentsId').value;
+        var className=document.getElementById('className').value;
         var paperId=parseInt(document.getElementById('paperId').value);
         var name=document.getElementById('name').value;
         var date=new Date(document.getElementById('date').value);
@@ -33,7 +33,7 @@
         $.ajax({
             type:'POST',
             url:'/teacher/postExam',
-            data:JSON.stringify({'paperId':paperId,'studentsId':studentsId,'name':name,'date':date}),
+            data:JSON.stringify({'paperId':paperId,'className':className,'name':name,'date':date}),
             success:function(data,status){
                 console.log(data);
             },

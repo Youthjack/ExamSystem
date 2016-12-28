@@ -2,16 +2,16 @@ package com.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonModel.FromSqlSubmit;
+import com.jsonModel.Message;
 import com.jsonModel.OjQuestionShow;
 import com.mapper.OjQuestionRepository;
 import com.model.OjQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,6 @@ public class OjController {
         return "index";
     }
 
-
     @RequestMapping("/get")
     @ResponseBody
     public String get()throws JsonProcessingException{
@@ -56,5 +55,20 @@ public class OjController {
         return json;
     }
 
+    @RequestMapping(value = "/submit_auth",method = RequestMethod.POST)
+    @ResponseBody
+    public String submit_auth(@RequestBody String body)throws JsonProcessingException{
+        FromSqlSubmit fromSqlSubmit;
+        Message message=new Message();
+        String json;
+        try{
+            fromSqlSubmit=objectMapper.readValue(body,FromSqlSubmit.class);
+        }catch (IOException e){
+            message.setStatus(e.toString());
+            json=objectMapper.writeValueAsString(message);
+            return json;
+        }
+        return "success";
+    }
 
 }

@@ -6,22 +6,22 @@
 </head>
 <body>
 <form action="/teacher/updatePaper" method="post">
-    <input id="id" name="id" type="text">
-    <input id="studentsId" name="studentsId" type="text">
-    <input id="name" name="name" type="text">
-    <input id="number" name="number" type="text">
-    <input id="email" name="email" type="text">
+    <input id="id" name="id" type="text" placeholder="teacherId">
+    <input id="studentsId" name="studentsId" type="text" placeholder="studentsId">
+    <input id="name" name="name" type="text" placeholder="teacherName">
+    <input id="number" name="number" type="text"    placeholder="teacherNumber">
+    <input id="email" name="email" type="text" placeholder="teacherEmail">
     <input id="sub" type="button" onclick="mySub()">
 </form>
 
-<script src="../js/jquery-1.11.1.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/chart.min.js"></script>
-<script src="../js/chart-data.js"></script>
-<script src="../js/easypiechart.js"></script>
-<script src="../js/easypiechart-data.js"></script>
-<script src="../js/bootstrap-datepicker.js"></script>
-<script src="../js/bootstrap-table.js"></script>
+<script src="../../js/jquery-1.11.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/chart.min.js"></script>
+<script src="../../js/chart-data.js"></script>
+<script src="../../js/easypiechart.js"></script>
+<script src="../../js/easypiechart-data.js"></script>
+<script src="../../js/bootstrap-datepicker.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
 <script>
     function mySub() {
         var id=parseInt(document.getElementById('id').value);
@@ -34,7 +34,7 @@
         });
         $.ajax({
             type:'POST',
-            url:'/teacher/addStudents',
+            url:'/manager/addStudents',
             data:JSON.stringify({'studentsId':studentsId,'teacherId':id,'name':name,'number':number,
                 'email':email}),
             success:function(data,status){

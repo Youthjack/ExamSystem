@@ -15,7 +15,8 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student,Long>{
     List<Student>findAll();
     Student findById(int id);
-    Student findByName(String name);
+    Student findByNumber(String number);
+    List<Student>findByClassName(String className);
 
     @Modifying
     @Query("delete from Student where number=:number")
