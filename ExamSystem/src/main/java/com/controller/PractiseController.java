@@ -3,11 +3,13 @@ package com.controller;
 import com.model.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,4 +53,21 @@ public class PractiseController {
             return "false;";
     }
 
+    @RequestMapping(value = "/getFile",method = RequestMethod.GET)
+    @ResponseBody
+    public String getFile(){
+        try{
+            //File file= ResourceUtils.getFile("../ojcompare/DuplicateEmail_result.txt");
+            File file=new File("DuplicateEmail_result.txt");
+            System.out.println(file.getAbsolutePath()+"\n"+file.getPath());
+            if(file.exists()){
+                System.out.println("文件存在");
+            }else{
+                System.out.println("文件不存在");
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return "13245";
+    }
 }

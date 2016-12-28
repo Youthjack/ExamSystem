@@ -21,7 +21,7 @@ public class OjQuestion {
     private double acceptance;
     @Column
     private int correctSubmit;
-    @Column()
+    @Column
     private int totalSubmit;
     @Column
     private String difficulty;

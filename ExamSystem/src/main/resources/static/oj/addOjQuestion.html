@@ -6,11 +6,9 @@
 </head>
 <body>
 <form action="/teacher/updatePaper" method="post">
-    <input id="id" name="id" type="text">
-    <input id="studentsId" name="studentsId" type="text">
-    <input id="name" name="name" type="text">
-    <input id="number" name="number" type="text">
-    <input id="email" name="email" type="text">
+    <input id="title" name="title" type="text" placeholder="title">
+    <input id="content" name="content" type="text" placeholder="content">
+    <input id="difficulty" name="difficulty" type="text" placeholder="difficulty">
     <input id="sub" type="button" onclick="mySub()">
 </form>
 
@@ -24,19 +22,16 @@
 <script src="../js/bootstrap-table.js"></script>
 <script>
     function mySub() {
-        var id=parseInt(document.getElementById('id').value);
-        var studentsId=document.getElementById('studentsId').value;
-        var name=document.getElementById('name').value;
-        var number=document.getElementById('number').value;
-        var email=document.getElementById('email').value;
+        var title=document.getElementById('title').value;
+        var content=document.getElementById('content').value;
+        var difficulty=document.getElementById('difficulty').value;
         $.ajaxSetup({
             contentType:'application/json'
         });
         $.ajax({
             type:'POST',
-            url:'/teacher/addStudents',
-            data:JSON.stringify({'studentsId':studentsId,'teacherId':id,'name':name,'number':number,
-                'email':email}),
+            url:'/oj/addOjQuestion',
+            data:JSON.stringify({'title':title,'content':content,'difficulty':difficulty}),
             success:function(data,status){
                 console.log(data);
             },
