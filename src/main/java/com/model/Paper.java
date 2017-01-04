@@ -19,15 +19,15 @@ public class Paper {
     @Column
     private String questions;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE})
     @JoinTable(name = "Paper_Question",
             joinColumns = {@JoinColumn(name = "paperId",referencedColumnName = "id")},
             inverseJoinColumns ={@JoinColumn(name = "questionId",referencedColumnName = "id")}
     )
     private List<Question> questionSet;
 
-    @OneToMany(mappedBy = "paper",fetch = FetchType.EAGER)
-    private Set<Exam> examSet;
+    @OneToMany(mappedBy = "paper",fetch = FetchType.LAZY)
+    private List<Exam> examSet;
 
 
     public Paper() {}
@@ -70,11 +70,11 @@ public class Paper {
         return questionSet;
     }
 
-    public void setExamSet(Set<Exam> examSet) {
-        this.examSet = examSet;
+    public List<Exam> getExamSet() {
+        return examSet;
     }
 
-    public Set<Exam> getExamSet() {
-        return examSet;
+    public void setExamSet(List<Exam> examSet) {
+        this.examSet = examSet;
     }
 }

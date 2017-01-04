@@ -1,5 +1,7 @@
 package com.model;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -12,7 +14,13 @@ public class Problem {
     @EmbeddedId
     ProblemPk pk;
     @Column
-    String answer;
+    String question;
+    @Column
+    String myAnswer;
+    @Column
+    String rightAnswer;
+    @Column
+    int type = 0;
     @Column
     int mark = 0;
 
@@ -25,20 +33,45 @@ public class Problem {
         return pk;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
 
     public void setMark(int mark) {
         this.mark = mark;
     }
 
 
-    public String getAnswer() {
-        return answer;
+    public String getMyAnswer() {
+        return myAnswer;
+    }
+
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setMyAnswer(String myAnswer) {
+        this.myAnswer = myAnswer;
+    }
+
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
     public int getMark() {
         return mark;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

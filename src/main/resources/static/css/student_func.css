@@ -1,0 +1,35 @@
+.navbar-title-strong {
+	color: white;
+	font-weight: 800;
+	padding-left: 50px;
+}
+
+.navbar-default {
+	background-color: #4279A8;
+	border-color: rgba(0, 0, 0, 0);
+}
+
+.white-font {
+	color: white;
+	font-weight: 500;
+}
+
+.placeholder img {
+	border-radius: 0%;
+}
+
+#icon_pick {
+	margin-top: 100px;
+}
+
+#exam, #review, #history, #info, #logout, #oj, a{
+	padding-bottom: 10px;
+	padding-top: 10px;
+	cursor: pointer;
+}
+
+#message{
+	position: fixed;
+	margin-top: 10px;
+	width: 300px;
+}

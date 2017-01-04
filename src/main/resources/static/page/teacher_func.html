@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 学生端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/teacher_func.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"><span class="navbar-title-strong">教师端功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="white-font">修改个人资料</span></a></li>
+                <li><a href="#"><span class="white-font">帮助</span></a></li>
+                <li><a href="#"><span class="white-font">退出</span></a></li>
+                <li><a href="#"><span class="white-font"></span></a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" id="choice">
+                <li class="active"><a href="#">首页</a></li>
+                <li><a href="add_papers.html">添加试卷</a></li>
+                <li><a href="publish_papers.html">发布试卷</a></li>
+                <li><a href="correct_papers.html">批改试卷</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2 class="page-header">选择你的下一步：</h2>
+            <!--选择图标-->
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 col-sm-offset-1 placeholder">
+                    <a href="add_papers.html"><img src="../img/add_papers.png" class="img-circle" alt="添加试卷"></a>
+                    <h4>添加试卷</h4>
+                    <span class="text-muted">己所不欲，勿施于人</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <a href="add_papers.html"><img src="../img/publish_papers.png" class="img-circle" alt="发布试卷"></a>
+                    <h4>发布试卷</h4>
+                    <span class="text-muted">忍一时风平浪静，退一步海阔天空</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <a href="correct_papers.html"><img src="../img/correct_papers.png" class="img-circle" alt="批改试卷"
+                                                       style="padding:20px; width: 200px; height:200px"></a>
+                    <h4>批改试卷</h4>
+                    <span class="text-muted">勿以恶小而为之,勿以善小而不为</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="../public/jquery/jquery-3.1.0.min.js"></script>
+<script src="../public/bootstrap/js/bootstrap.min.js"></script>
+<script src="../public/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../public/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

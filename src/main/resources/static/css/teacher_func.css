@@ -1,0 +1,24 @@
+* {
+	font-family: "黑体";
+}
+
+.navbar-title-strong {
+	color: white;
+	font-weight: 800;
+	padding-left: 50px;
+}
+
+.navbar-default {
+	background-color: #4279A8;
+	border-color: rgba(0, 0, 0, 0);
+}
+
+.white-font {
+	color: white;
+	font-weight: 500;
+}
+
+.placeholders img {
+	border-radius: 0%;
+}
+

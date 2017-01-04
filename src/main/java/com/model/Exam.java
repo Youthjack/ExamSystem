@@ -25,12 +25,12 @@ public class Exam {
     private Date date;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "student")
     private Student student;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "paper")
     private Paper paper;
 

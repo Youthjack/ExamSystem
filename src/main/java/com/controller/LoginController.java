@@ -41,7 +41,8 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = "/login_auth",method = RequestMethod.POST)
+    @RequestMapping(value = "/login_auth",method = RequestMethod.POST,consumes = "application/json",
+    produces = "application/json")
     @ResponseBody
     public String login(@RequestBody FromLogin fromLogin) throws JsonProcessingException {
         String username = fromLogin.getUsername();
@@ -55,7 +56,7 @@ public class LoginController {
             loginReturn.setIdty(idty);
             if(idty.equals(IdentifyType.STUDENT)) {
                 Student student = studentRepository.findByNumber(username);
-                if(null == student) {
+                if(null != student) {
                     loginReturn.setName(student.getName());
                     loginReturn.setClassName(student.getClassName());
                     loginReturn.setId(student.getId());
@@ -65,7 +66,7 @@ public class LoginController {
                 }
             } else if(idty.equals(IdentifyType.TEACHER)) {
                 Teacher teacher = teacherRepository.findByNumber(username);
-                if(null == teacher) {
+                if(null != teacher) {
                     loginReturn.setName(teacher.getName());
                     loginReturn.setEmail(teacher.getEmail());
                     loginReturn.setId(teacher.getId());
@@ -74,6 +75,7 @@ public class LoginController {
                     loginReturn.setStatus("teacher cannot find");
                 }
             } else if(idty.equals(IdentifyType.ADMIN)) {
+                loginReturn.setId(user.getId());
                 loginReturn.setStatus("success");
             }
         }

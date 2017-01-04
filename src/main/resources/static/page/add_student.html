@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 管理端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/student_func.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"><span class="navbar-title-strong">管理功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="change_passwd.html"><span class="white-font">修改密码</span></a></li>
+                <li><a href="#"><span class="white-font">帮助</span></a></li>
+                <li><a href="login.html"><span class="white-font">退出</span></a></li>
+                <li><a href="#"><span class="white-font"></span></a></li>
+            </ul>
+            <div class="navbar navbar-right navbar-brand">
+                <p class="white-font">欢迎您，管理员用户！</p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="manager.html">首页</a></li>
+                <li><a href="add_teacher.html">添加老师</a></li>
+                <li class="active"><a href="#">添加学生</a></li>
+                <li><a href="delete_user.html">删除用户</a></li>
+                <li><a href="reset_user_passwd.html">重置用户密码</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div style="padding: 100px 100px 10px;">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="input-group">
+                        <span class="input-group-addon">学生姓名</span>
+                        <input type="text" id="s_name" class="form-control" placeholder="请输入添加学生的姓名">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">学生班级</span>
+                        <input type="text" id="s_className" class="form-control" placeholder="请输入添加学生的班级">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">电子邮件</span>
+                        <input type="text" id="s_mail" class="form-control" placeholder="请输入添加学生的邮箱">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">登录账户</span>
+                        <input type="text" id="s_username" class="form-control" placeholder="请为添加学生设置登录用的账户">
+                    </div>
+                </form>
+                <br>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" id="btn_s_add_submit">提交添加</button>
+                <div style="padding: 50px 100px 0px;" class="navbar  navbar-brand" >
+                    <p>或者在已有用户中选择，请点击下面按钮</p>
+                    <form method="POST" enctype="multipart/form-data" action="/manager/batchAddUser">
+                        <input type="file" name="file">
+                        <input type="submit" value="上传">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="../public/jquery/jquery-3.1.0.min.js"></script>
+<script src="../public/bootstrap/js/bootstrap.min.js"></script>
+<script src="../public/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../public/ie10-viewport-bug-workaround.js"></script>
+<script src="../js/add_student.js"></script>
+</body>
+</html>

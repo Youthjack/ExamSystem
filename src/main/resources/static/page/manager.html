@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 管理端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/student_func.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span class="navbar-title-strong">管理功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          <li><a href="change_passwd.html"><span class="white-font">修改密码</span></a></li>
+          <li><a href="#"><span class="white-font">帮助</span></a></li>
+          <li><a href="login.html"><span class="white-font">退出</span></a></li>
+          <li><a href="#"><span class="white-font"></span></a></li>
+          </ul>
+          <div class="navbar navbar-right navbar-brand">
+            <p class="white-font">欢迎您，管理员用户！</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">首页</a></li>
+            <li><a href="add_teacher.html">添加老师</a></li>
+            <li><a href="add_student.html">添加学生</a></li>
+            <li><a href="delete_user.html">删除用户</a></li>
+            <li><a href="reset_user_passwd.html">重置用户密码</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="page-header">选择你的下一步：</h2>
+          <!--选择图标-->
+          <div class="row placeholders" style="padding: 50px;">
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <a href="add_teacher.html"><img src="../img/添加老师.png" class="img-rounded" alt="添加老师"></a>
+              <h4>添加老师</h4>
+              <!--<span class="text-muted">宸辨墍涓嶆锛屽嬁鏂戒簬浜�</span>-->
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <a href="add_student.html"><img src="../img/添加学生.png" class="img-rounded" alt="添加学生"></a>
+              <h4>添加学生</h4>
+             <!-- <span class="text-muted">鍕夸互鎭跺皬鑰屼负涔�,鍕夸互鍠勫皬鑰屼笉涓�</span>-->
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <a href="delete_user.html"><img src="../img/用户删除.png" class="img-rounded" alt="删除用户"></a>
+              <h4>删除用户</h4>
+              <!--<span class="text-muted">宸辨墍涓嶆锛屽嬁鏂戒簬浜�</span>-->
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <a href="reset_user_passwd.html"><img src="../img/重置密码.png" class="img-rounded" alt="重置用户密码"></a>
+              <h4>重置用户密码</h4>
+              <!--<span class="text-muted">宸辨墍涓嶆锛屽嬁鏂戒簬浜�</span>-->
+            </div>
+
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../public/jquery/jquery-3.1.0.min.js"></script>
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../public/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

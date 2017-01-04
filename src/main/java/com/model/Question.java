@@ -24,9 +24,7 @@ public class Question {
     @Column
     private int type;   //1选择题，2问答题
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE},
-            fetch = FetchType.LAZY,
-            mappedBy = "questionSet")
+    @ManyToMany(mappedBy = "questionSet")
     private Set<Paper>papers;
 
     public Question(){}

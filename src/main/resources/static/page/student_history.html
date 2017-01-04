@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 学生端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/student_func.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span class="navbar-title-strong">学生端功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          <li><a><span class="white-font">欢迎你！<span id="stu_name">NULL&nbsp;</span>[<span id="identity">NULL</span>]</span></a></li>
+          <li><a href="#"><span class="white-font">帮助</span></a></li>
+          <li><a href="#"><span class="white-font">退出</span></a></li>
+          <li><a href="#"><span class="white-font"></span></a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="student_func.html">首页</a></li>
+            <li><a href="student_exam.html">进入考试</a></li>
+            <li><a href="student_oj.html">Online Judge</a></li>
+            <li><a href="student_review.html">相关知识</a></li>
+            <li class="active"><a href="#">历史考试</a></li>
+            <li><a href="student_info.html">个人信息</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="page-header">历史考试记录：</h2>
+          <!--选择图标-->
+          <table id="chapter_table" class="table table-striped">
+            <thead>
+              <tr><th>#</th><th>试卷名</th><th>考试时间</th><th>分数</th><th>查看</th></tr>
+            </thead>
+            <tbody id="history_exam">
+<!--               <tr>
+                <th>1</th>
+                <th>0001</th>
+                <th>2：00-2：30</th>
+                <th>80</th>
+                <th><button class="btn btn-default">click</button></th>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div style="width: 900px;" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">第一章测试</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div id="modal_content" class="col-sm-9"><!--题目-->
+
+<!--             <div id="t1 " class="panel panel-success">
+              <div class="panel-heading">1<a style="float: right" href="#modal_content">返回顶部</a></div>
+              <div class="panel-body">
+                <p>1+1=?</p>
+              </div>
+              <div class="btn btn-group">
+                <button class="btn btn-success">A</button>
+                <button class="btn btn-default">B</button>
+                <button class="btn btn-default">C</button>
+                <button class="btn btn-default">D</button>
+              </div>
+            </div>
+
+            <div id="t2" class="panel panel-success">
+              <div class="panel-heading">1</div>
+              <div class="panel-body">
+                <p>1+1=?</p>
+              </div>
+              <div class="btn btn-group">
+                <div>
+                  <p>你的答案：</p>
+                  <p>123</p>
+                </div>
+                <div>
+                  <p>参考答案：</p>
+                  <p>1234</p>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+
+          <div class="col-sm-3"><!--侧边记分板-->
+            <div>选择题情况</div>
+            <div id="modal_situ" class="list-group">
+<!--               <a href="#t1" class="list-group-item list-group-item-success">1</a>
+              <a href="#t2" class="list-group-item list-group-item-success">2</a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Bootstrap core JavaScript 
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../public/jquery/jquery-3.1.0.min.js"></script>
+    <script src="../public/jquery/jquery.cookie.js"></script>
+
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../public/ie10-viewport-bug-workaround.js"></script>
+
+    <script src="../js/student_history.js"></script>
+  </body>
+</html>

@@ -3,22 +3,22 @@ package com.controller;
 import com.csvreader.CsvReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsonModel.CorrectExam;
-import com.jsonModel.PostExam;
-import com.jsonModel.Message;
+import com.jsonModel.*;
 import com.mapper.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by takahiro on 2016/12/22.
@@ -40,50 +40,6 @@ public class TeacherController {
     TeacherRepository teacherRepository;
     ObjectMapper objectMapper=new ObjectMapper();
 
-    //添加跟更改都是这个接口
-    @RequestMapping(value = "/addStudents",method = RequestMethod.POST)
-    @ResponseBody
-    public String addStudent(@RequestBody String body)throws  JsonProcessingException{
-        Message message=new Message();
-        String json;
-        Teacher_Student teacher_student;
-        try{
-            teacher_student=objectMapper.readValue(body,Teacher_Student.class);
-        }catch (IOException e){
-            System.out.println(e);
-            message.setStatus("error");
-            json=objectMapper.writeValueAsString(message);
-            return json;
-        }
-        if(teacher_student.getStudentsId()==null||teacher_student.getName()==null||
-                teacher_student.getEmail()==null||teacher_student.getNumber()==null){
-            message.setStatus("error");
-            json=objectMapper.writeValueAsString(message);
-            return json;
-        }
-        try {
-            String[] groups = teacher_student.getStudentsId().split("-");
-            List<Student> list = new ArrayList<Student>();
-            for (String s : groups) {
-                Student student = new Student();
-                student.setId(Integer.parseInt(s));
-                list.add(student);
-            }
-            Teacher teacher = new Teacher();
-            teacher.setId(teacher_student.getTeacherId());
-            teacher.setEmail(teacher_student.getEmail());
-            teacher.setName(teacher_student.getName());
-            teacher.setNumber(teacher_student.getNumber());
-            teacher.setStudentList(list);
-            teacherRepository.save(teacher);
-            message.setStatus("success");
-        }catch (Exception e){
-            System.out.println(e);
-            message.setStatus("error");
-        }
-        json=objectMapper.writeValueAsString(message);
-        return json;
-    }
 
     @RequestMapping(value = "/seeStudents",method = RequestMethod.POST)
     @ResponseBody
@@ -222,8 +178,9 @@ public class TeacherController {
     //是不可能的，会出现个很严重的问题，解决方法可以前端轮询，或者websocket
     @RequestMapping(value = "/addPaper",method = RequestMethod.POST)
     @ResponseBody
-    public String addPaper(@RequestBody String body)throws  JsonProcessingException{
+    public String addPaper(@RequestBody String body) throws  JsonProcessingException{
         Paper paper;
+        System.out.println("hahah");
         Message message=new Message();
         String json;
         try{
@@ -380,38 +337,109 @@ public class TeacherController {
 
     @RequestMapping(value = "/postExam",method = RequestMethod.POST)
     @ResponseBody
-    public String postExam(@RequestBody PostExam postExam) throws JsonProcessingException {
+    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
+    public String postExam(@RequestBody String body) throws JsonProcessingException {
         Message msg = new Message();
         String json;
+        PostExam postExam;
+        try{
+            postExam=objectMapper.readValue(body,PostExam.class);
+        }catch (IOException e){
+            msg.setStatus("error");
+            json=objectMapper.writeValueAsString(msg);
+            return json;
+        }
         if(postExam==null) {
             msg.setStatus("error");
             json = objectMapper.writeValueAsString(msg);
+            return json;
         } else {
-            int sid = postExam.getStudentId();
+            if(postExam.getDate()==null||postExam.getName()==null||postExam.getPaperId()==0||postExam.getClassName()==null){
+                msg.setStatus("error");
+                json=objectMapper.writeValueAsString(msg);
+                return json;
+            }
+            List<Student>list=studentRepository.findByClassName(postExam.getClassName());
             int pid = postExam.getPaperId();
-            Student student;
-            Paper paper;
-            if(null == (student = studentRepository.findById(sid))) {
-                msg.setStatus("student can not find");
-                json = objectMapper.writeValueAsString(msg);
-            } else if(null == (paper=paperRepository.findById(pid))) {
-                msg.setStatus("paper can not find");
-                json = objectMapper.writeValueAsString(msg);
-            } else {
-                Exam exam = new Exam();
-                StudentPaperPk pk = new StudentPaperPk(sid,pid);
-                exam.setPk(pk);
-                exam.setName(postExam.getName());
-                exam.setStudent(student);
-                exam.setPaper(paper);
-                exam.setDate(postExam.getDate());
-                exam.setTimeSec(postExam.getTimeSec());
-                examRepository.save(exam);
-                msg.setStatus("success");
-                json = objectMapper.writeValueAsString(msg);
+            for(int i=0;i<list.size();i++) {
+                int sid;
+                try {
+                    sid = list.get(i).getId();
+                }catch (Exception e){
+                    System.out.println(e);
+                    msg.setStatus("error");
+                    break;
+                }
+                Student student;
+                Paper paper;
+                if (null == (student = studentRepository.findById(sid))) {
+                    msg.setStatus("student can not find");
+                    json = objectMapper.writeValueAsString(msg);
+                    return json;
+                } else if (null == (paper = paperRepository.findById(pid))) {
+                    msg.setStatus("paper can not find");
+                    json = objectMapper.writeValueAsString(msg);
+                    return json;
+                } else {
+                    Exam exam = new Exam();
+                    StudentPaperPk pk = new StudentPaperPk(sid, pid);
+                    exam.setPk(pk);
+                    exam.setName(postExam.getName());
+                    exam.setStudent(student);
+                    exam.setPaper(paper);
+                    exam.setDate(postExam.getDate());
+                    examRepository.save(exam);
+                }
             }
         }
+        msg.setStatus("success");
+        json = objectMapper.writeValueAsString(msg);
         return json;
+    }
+
+    //老师批改试卷的接口
+
+    @RequestMapping("/getExams/{tid}")
+    @ResponseBody
+    public String getExams(@PathVariable int tid) throws JsonProcessingException {
+        Message msg = new Message();
+        Teacher teacher = teacherRepository.findById(tid);
+        if(null == teacher) {
+            msg.setStatus("teacher cannot find!");
+            return objectMapper.writeValueAsString(msg);
+        } else {
+            List<ExamReturn> retList = new ArrayList<ExamReturn>();
+            List<Student> students = teacher.getStudentList();
+            for(Student student:students) {
+                List<Exam> exams = examRepository.findByPkStudentId(student.getId());
+                for(Exam exam: exams) {
+                    if(exam.getHasCorrect() == 0 && exam.getStatus() == 1) {
+                        ExamReturn examReturn = new ExamReturn(exam.getPk().getStudentId(),
+                                exam.getPk().getPaperId(),exam.getName(),student.getNumber());
+                        retList.add(examReturn);
+                    }
+                }
+            }
+            return objectMapper.writeValueAsString(retList);
+        }
+    }
+
+    @RequestMapping(value = "/getExamDetail/{sid}/{pid}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getExamDetail(@PathVariable int sid,
+                                @PathVariable int pid) throws JsonProcessingException {
+        Message msg = new Message();
+        List<Problem> problems = problemRepository.findByPkStudentIdAndPkPaperId(sid,pid);
+        List<ExamDetailReturn> list = new ArrayList<ExamDetailReturn>();
+        for(Problem problem:problems) {
+            if(problem.getType()==2) {
+                list.add(new ExamDetailReturn(problem.getQuestion(),
+                        problem.getPk().getQuestionId(),
+                        problem.getMyAnswer(),
+                        problem.getRightAnswer()));
+            }
+        }
+        return objectMapper.writeValueAsString(list);
     }
 
     @RequestMapping(value = "/correctExam",method = RequestMethod.POST)
@@ -452,5 +480,52 @@ public class TeacherController {
             }
         }
         return objectMapper.writeValueAsString(msg);
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() throws JsonProcessingException, ParseException {
+        Exam exam1 = new Exam();
+        Exam exam2 = new Exam();
+        Exam exam3 = new Exam();
+        Student student = studentRepository.findByNumber("233");
+        Paper paper = new Paper();
+        List<Question> questions = questionRepository.findAll();
+        paper.setQuestionSet(questions);
+        paper.setPaperName("测试用卷子");
+        List<Exam> exams = new ArrayList<Exam>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        exam1.setPk(new StudentPaperPk(1,1));
+        exam1.setName("第一章测试");
+        exam1.setTimeSec(1800);
+        Date date = sdf.parse("2017-1-1 20:00:00");
+        exam1.setDate(date);
+        exam1.setStudent(student);
+        exam1.setPaper(paper);
+
+        exam2.setPk(new StudentPaperPk(1,2));
+        exam2.setName("第二章测试");
+        exam2.setDate(sdf.parse("2015-1-1 20:00:00"));
+        exam2.setTimeSec(1800);
+        exam2.setStudent(student);
+        exam2.setPaper(paper);
+
+        exam3.setPk(new StudentPaperPk(1,3));
+        exam3.setName("第三章测试");
+        exam3.setDate(sdf.parse("2016-12-25 20:00:00"));
+        exam3.setTimeSec(1800);
+        exam3.setStatus(1);
+        exam3.setStudent(student);
+        exam3.setPaper(paper);
+
+        exams.add(exam1);
+        exams.add(exam2);
+        exams.add(exam3);
+        paper.setExamSet(exams);
+        paperRepository.save(paper);
+        examRepository.save(exam1);
+        examRepository.save(exam2);
+        examRepository.save(exam3);
+        return objectMapper.writeValueAsString(exams);
     }
 }

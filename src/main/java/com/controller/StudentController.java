@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsonModel.FinishExam;
 import com.jsonModel.Message;
-import com.jsonModel.PostExam;
+import com.jsonModel.ChangePwd;
 import com.mapper.*;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,22 +59,28 @@ public class StudentController {
     @RequestMapping(value = "/changePwd",method = RequestMethod.POST)
     @ResponseBody
     public String changePwd(@RequestBody String body)throws JsonProcessingException{
-        User user;
+        ChangePwd changePwd;
         String json;
         Message message=new Message();
         try{
-            user=objectMapper.readValue(body,User.class);
+            changePwd=objectMapper.readValue(body,ChangePwd.class);
         }catch (IOException e){
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
         }
-        if(user.getUsername()==null||user.getPassword()==null){
+        if(changePwd.getUsername()==null||changePwd.getBeforePassword()==null
+                ||changePwd.getPassword()==null){
             message.setStatus("error");
             json=objectMapper.writeValueAsString(message);
             return json;
         }
-        int s=userRepository.updateUserByUsername(user.getUsername(),user.getPassword());
+        if(null == userRepository.findByUsernameAndPassword(changePwd.getUsername(),changePwd.getBeforePassword())) {
+            message.setStatus("password error");
+            json = objectMapper.writeValueAsString(message);
+            return json;
+        }
+        int s=userRepository.updateUserByUsername(changePwd.getUsername(),changePwd.getPassword());
         if(s==1)    message.setStatus("success");
         else    message.setStatus("error");
         json=objectMapper.writeValueAsString(message);
@@ -99,7 +105,23 @@ public class StudentController {
         return json;
     }
 
-    @RequestMapping(value = "/finishExam",method = RequestMethod.POST)
+    @RequestMapping(value = "/getPaper/{sid}/{pid}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getPaper(@PathVariable int sid,@PathVariable int pid) throws JsonProcessingException {
+        Exam exam = examRepository.findByPk(new StudentPaperPk(sid,pid));
+        List<Question> questions = exam.getPaper().getQuestionSet();
+        return objectMapper.writeValueAsString(questions);
+    }
+
+    @RequestMapping(value = "/getHistoryExam/{sid}/{pid}",method = RequestMethod.GET)
+    @ResponseBody
+    public String getHistoryExam(@PathVariable int sid,@PathVariable int pid) throws JsonProcessingException {
+        List<Problem> problems = problemRepository.findByPkStudentIdAndPkPaperId(sid,pid);
+        return objectMapper.writeValueAsString(problems);
+    }
+
+    @RequestMapping(value = "/finishExam",method = RequestMethod.POST,
+    consumes = "application/json")
     @ResponseBody
     public String finishExam(@RequestBody FinishExam finishExam) throws JsonProcessingException {
         Message msg = new Message();
@@ -137,7 +159,10 @@ public class StudentController {
                             Problem problem = new Problem();
                             ProblemPk ppk = new ProblemPk(paperId,studentId,idList.get(i));
                             problem.setPk(ppk);
-                            problem.setAnswer(myAns);
+                            problem.setMyAnswer(myAns);
+                            problem.setRightAnswer(ans);
+                            problem.setType(type);
+                            problem.setQuestion(question.getQuestion());
                             if(type == 1) {     //选择题
                                 if(myAns.equals(ans)) {
                                     mark += point;

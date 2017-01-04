@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 学生端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <link href="../css/publish_papers.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../public/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../css/teacher_func.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"><span class="navbar-title-strong">教师端功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="white-font">修改个人资料</span></a></li>
+                <li><a href="#"><span class="white-font">帮助</span></a></li>
+                <li><a href="#"><span class="white-font">退出</span></a></li>
+                <li><a href="#"><span class="white-font"></span></a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" id="choice">
+                <li><a href="teacher_func.html">首页</a></li>
+                <li><a href="add_papers.html">添加试卷</a></li>
+                <li class="active"><a href="publish_papers.html">发布试卷</a></li>
+                <li><a href="correct_papers.html">批改试卷</a></li>
+            </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h4 class="page-header">发布试卷</h4>
+            <div class="row placeholders">
+                <form action="" class="form-horizontal" role="form" action="/teacher/postExam" method="post"
+                      enctype="multipart/form-data">
+                    <fieldset>
+                        <table class="table table-striped" id="unrealeased-papers">
+                            <caption style="font-weight: 900; ">待发布试卷:</caption>
+                            <thead>
+                            <tr>
+                                <th>试卷名</th>
+                                <th>考试时间</th>
+                                <th>班级</th>
+                                <th>发布</th>
+                            </tr>
+                            </thead>
+                            <tbody style="text-align: left">
+                            <tr>
+                                <td>
+                                    <select id="paper-name" class="form-control">
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="paper-time" class="form-control" size="16" type="text" value=""
+                                           placeholder="如：2016/12/28 12:00:00">
+                                </td>
+                                <td>
+                                    <select id="student-class" class="form-control">
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" id="publish_btn_smt" class="btn btn-info">发布</button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="row placeholders">
+                <table class="table table-striped" id="published_papers">
+                    <caption style="font-weight: 900;">已发布试卷:</caption>
+                    <thead>
+                    <tr>
+                        <th>试卷名</th>
+                        <th>考试时间</th>
+                        <th>班级</th>
+                        <th>发布</th>
+                    </tr>
+                    </thead>
+                    <tbody style="text-align: left">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../public/jquery/jquery-3.1.0.min.js"></script>
+<script src="../public/bootstrap/js/bootstrap.min.js"></script>
+<script src="../public/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../public/ie10-viewport-bug-workaround.js"></script>
+<script src="../public/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script src="../public/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script src="../public/jquery/jquery.cookie.js"></script>
+<script type="text/javascript">
+
+    function init_paper_name_select() {
+
+        var paper_name_select = $('#paper-name');
+
+        $.ajaxSetup({
+            contentType: 'application/json'
+        })
+        $.ajax({
+            type: 'GET',
+            url: '/teacher/showAllPapers',
+            success: function (data, status) {
+                var papers = eval('(' + data + ')');
+                for (var i=0;i<papers.length;i++) {
+                    var curPaperJSON = papers[i];
+                    var paperName = curPaperJSON['paperName'];
+                    var paperId = curPaperJSON['id'];
+                    var option = $("<option id=" + paperId + ">" + paperName + "</option>");
+                    paper_name_select.append(option);
+                }
+            },
+            error: function (xmlhttprequest, textstatus, errorthrow) {
+                console.log(errorthrow);
+            }
+        })
+    }
+
+
+
+    function init_paper_class_select() {
+        var teacherId = jQuery.cookie('id');
+        $.ajaxSetup({
+            contentType: 'application/json'
+        })
+        $.ajax({
+            type: 'POST',
+            url: '/teacher/seeStudents',
+            data: JSON.stringify({'id': teacherId}),
+            success: function (data, status) {
+                var seeStudents = eval('(' + data + ')');
+                var students = seeStudents['studentList'];
+                console.log(students.length);
+                var classes = new Array();
+                var classesCount = 0;
+                for (var i=0;i<students.length;i++) {
+                    var curClass = students[i]['className'];
+                    var duplicate = false;
+                    for (var j = 0; j < classesCount; j++) {
+                        if (curClass == classes[j]) {
+                            duplicate = true;
+                            break;
+                        }
+                    }
+                    if (duplicate == false) {
+                        classes.push(curClass);
+                        classesCount++;
+                    }
+                }
+                var class_select = $('#student-class');
+                for (var j = 0; j < classesCount; j++) {
+                    var class_option = $("<option>" + classes[j] + "</option>");
+                    class_select.append(class_option);
+                }
+            },
+            error: function (xmlhttprequest, textstatus, errorthrown) {
+                console.log(errorthrown);
+            }
+        })
+    }
+
+    function publish_paper() {
+
+        var className = $('#student-class');
+        var thePaper = $('#paper-name').find(':selected');
+        var paperId = thePaper.attr('id');
+        var name = thePaper.val();
+        var paperDateString = $('#paper-time').val();
+        alert(paperDateString);
+        var paperArr = paperDateString.split(' ');
+        var paperDate = paperArr[0];
+        var paperTime = paperArr[1];
+        alert(paperDate + " " + paperTime);
+        var paperDateArr = paperDate.split('-');
+        var paperYear = parseInt(paperDateArr[0]);
+        var paperMonth = parseInt(paperDateArr[1]) - 1;
+        var paperDay = parseInt(paperDateArr[2]);
+        var paperTimeArr = paperTime.split(':');
+        var paperHour = parseInt(paperTimeArr[0]);
+        var paperMinute = parseInt(paperTimeArr[1]);
+        var paperSecond = 0;
+        var paperDate = new Date(paperYear, paperMonth, paperDay, paperHour, paperMinute, paperSecond);
+
+        alert("班级：" + className
+                + "\n试卷ID：" + paperId
+                + "\n试卷名称：" + name
+                + "\n考试时间：" + paperDate
+        );
+
+        $.ajaxSetup({
+            contentType: 'application/json'
+        })
+        $.ajax({
+            type: 'POST',
+            url: '/teacher/postExam',
+            data: JSON.stringify({'className': className, 'paperId': paperId, 'name': name, 'date': paperDate}),
+            success: function (data, status) {
+                console.log(data);
+            },
+            error: function (xmlhttprequest, textstatus, errorthrown) {
+                console.log(errorthrown);
+            }
+        });
+    }
+
+    $('#publish_btn_smt').click(function () {
+
+        var className = $('#student-class').find(':selected').text();
+        var thePaper = $('#paper-name').find(':selected');
+        var paperId = thePaper.attr('id');
+        var name = thePaper.val();
+        var paperDateString = $('#paper-time').val();
+        alert(paperDateString);
+        var paperArr = paperDateString.split(' ');
+        var paperDate = paperArr[0];
+        var paperTime = paperArr[1];
+        alert(paperDate+"\n"+paperTime);
+        var paperDateArr = paperDate.split('/');
+        var paperYear = parseInt(paperDateArr[0]);
+        var paperMonth = parseInt(paperDateArr[1]) - 1;
+        var paperDay = parseInt(paperDateArr[2]);
+        var paperTimeArr = paperTime.split(':');
+        var paperHour = parseInt(paperTimeArr[0]);
+        var paperMinute = parseInt(paperTimeArr[1]);
+        var paperSecond = 0;
+        var paperDate = new Date(paperYear, paperMonth, paperDay, paperHour, paperMinute, paperSecond);
+        alert("班级：" + className
+                + "\n试卷ID：" + paperId
+                + "\n试卷名称：" + name
+                + "\n考试时间：" + paperDate
+        );
+
+        $.ajaxSetup({
+            contentType: 'application/json'
+        })
+        $.ajax({
+            type: 'POST',
+            url: '/teacher/postExam',
+            data: JSON.stringify({'className': className, 'paperId': paperId, 'name': name, 'date': paperDate}),
+            success: function (data, status) {
+                console.log(data);
+            },
+            error: function (xmlhttprequest, textstatus, errorthrown) {
+                console.log(errorthrown);
+            }
+        });
+
+    });
+
+    $(document).ready(function () {
+        init_paper_name_select();
+        init_paper_class_select();
+    });
+
+
+</script>
+</body>
+</html>

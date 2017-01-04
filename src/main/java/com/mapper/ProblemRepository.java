@@ -12,5 +12,6 @@ import java.util.List;
  */
 public interface ProblemRepository extends JpaRepository<Problem,ProblemPk> {
     List<Problem> findByPkStudentId(int studentId);
+    List<Problem> findByPkStudentIdAndPkPaperId(int studentId,int paperId);
     Problem findByPk(ProblemPk pk);
 }

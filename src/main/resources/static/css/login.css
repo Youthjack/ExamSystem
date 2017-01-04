@@ -1,0 +1,24 @@
+.navbar-title-strong {
+	color: white;
+	font-weight: 800;
+}
+
+.navbar-default {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-color: rgba(0, 0, 0, 0);
+}
+
+body {
+	background:url("../img/background.jpg") no-repeat fixed center top transparent;
+	background-color: cover;
+}
+
+.radio-group {
+	margin-top: 10px;
+	margin-bottom:  10px;
+}
+
+.white-font {
+	color: white;
+	font-weight: 500;
+}

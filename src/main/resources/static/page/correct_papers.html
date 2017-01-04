@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 学生端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <style>
+        tr td {
+            vertical-align: middle !important;
+        }
+
+        * {
+            font-family: '黑体';
+        }
+    </style>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/teacher_func.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="backdrop:static">
+    <div class="modal-dialog" style="width:1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4>批改</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td>题目</td>
+                        <td>学生答案</td>
+                        <td>标准答案</td>
+                        <td>评分(满分5)</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <button id="correct_paper_btn_smt" type="button" style="width:100%" class="btn btn-success" data-dismiss="modal">确认
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"><span class="navbar-title-strong">教师端功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="white-font">修改个人资料</span></a></li>
+                <li><a href="#"><span class="white-font">帮助</span></a></li>
+                <li><a href="#"><span class="white-font">退出</span></a></li>
+                <li><a href="#"><span class="white-font"></span></a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" id="choice">
+                <li><a href="teacher_func.html">首页</a></li>
+                <li><a href="add_papers.html">添加试卷</a></li>
+                <li><a href="publish_papers.html">发布试卷</a></li>
+                <li class="active"><a href="#">批改试卷</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h4 class="page-header">批改试卷</h4>
+            <!--选择图标-->
+            <div class="row placeholders">
+                <table class="table table-striped" id="uncorrected_papers">
+                    <caption>待批改试卷:</caption>
+                    <thead>
+                    <tr>
+                        <td>学号</td>
+                        <td>试卷名</td>
+                        <td>批改试卷</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="../public/jquery/jquery-3.1.0.min.js"></script>
+<script src="../public/bootstrap/js/bootstrap.min.js"></script>
+<script src="../public/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../public/ie10-viewport-bug-workaround.js"></script>
+<script src="../public/jquery/jquery.cookie.js"></script>
+<script>
+
+//    function correct_paper() {
+//        $('#myModal').modal('show');
+//        $('#myModal button[type=button].btn-success').click(function () {
+//            var scores = $('#myModal select');
+//            var result = 0;
+//            for (var i = 0; i < scores.length; i++) {
+//                var temp = $(scores[i]).val();
+//                result += parseInt(temp);
+//                $(scores[i]).val(0);
+//            }
+//            alert('总计 ' + scores.length + ' 题\n' + '共 ' + result + ' 分\n');
+//            $('#myModal').modal('hide');
+//        });
+//    }
+
+    $(document).ready(function(){
+        var id = $.cookie('id');
+        $.ajax({
+            type:'get',
+            url:'/teacher/getExams/'+id,
+            success:function(data,status) {
+                console.log(data);
+                var uncorrected_papers_tbody = $('#uncorrected_papers').find('tbody');
+                var pieces = eval('('+data+')');
+                for(var i=0;i<pieces.length;i++) {
+                    var piece  = pieces[i];
+                    var studentId = piece['studentId'];
+                    var paperId = piece['paperId'];
+                    var paperName = piece['paperName'];
+                    var username = piece['username'];
+                    var tr = $("<tr><td id="+studentId+">"+username+"</td><td id='"+paperId+"'>"+paperName+"</td><td>"+
+                        "<button type='button' onclick='sub(this)' class='btn btn-info' data-toggle='modal' data-target='#myModal' data-backdrop='static'>批改</button>"+
+                        +"</td></tr>");
+                    uncorrected_papers_tbody.append(tr);
+                }
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown) {
+                console.log(errorthrown);
+            }
+        });
+
+
+    })
+
+    function sub(obj) {
+        var par = $(obj).parent().parent();
+        var id = par.find('td').eq(0).attr('id');
+        var paperId = par.find('td').eq(1).attr('id');
+        var correct_btn = par.find('button').eq(0);
+        alert(correct_btn.html());
+//        alert(id+" "+paperId);
+        $.ajax({
+            type:'get',
+            url:'/teacher/getExamDetail/'+id+'/'+paperId,
+            success:function(data,status){
+                var pieces = eval('('+data+')');
+                $('#myModal').modal('show');
+                var modalBody_tbody = $('div.modal-body').find('tbody');
+                modalBody_tbody.empty();
+                for(var i=0;i<pieces.length;i++) {
+                    var piece = pieces[i];
+                    var question_description = piece['questionDescription'];
+                    var question_id = piece['questionId'];
+                    var student_answer = piece['studentAnswer'];
+                    var standard_answer = piece['standardAnswer'];
+                    var tr = $("<tr><td id='"+question_id+"'>"+question_description+"</td><td>"+student_answer+"</td><td>"+standard_answer+"</td><td><select class='form-control' style='min-width: 80px'><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>");
+                    modalBody_tbody.append(tr);
+                }
+                $('#correct_paper_btn_smt').click(function(){
+                    var idList = new Array();
+                    var pointList = new Array();
+                    var trs = $('div.modal-body').find('tr');
+                    for(var i=0;i<trs.length;i++) {
+                        var tr =trs[i];
+                        var id_question = $(tr).find('td:eq(0)').text();
+                        var point_td = $(tr).find('td:eq(3)').find('select').val();
+                        idList.push(id_question);
+                        pointList.push(point_td);
+                    }
+                    $.ajaxSetup({
+                        contentType:'application/json'
+                    });
+                    $.ajax({
+                        type:'POST',
+                        url:'/teacher/correctExam',
+                        data:JSON.stringify({'studentId':id,'paperId':paperId,'idList':idList,'pointList':pointList}),
+                        success:function(data,status){
+                            console.log(data);
+                            $('#mymodal').modal('hide');
+                            correct_btn.removeClass('btn-info');
+                            correct_btn.addClass('btn-warning');
+                            correct_btn.text('已批改');
+                            correct_btn.attr('disabled','disabled');
+                        },
+                        error:function(xmlhttprequest,textstatus,errorthrown){
+                            console.log(errorthrown);
+                        }
+                    })
+                })
+            },
+            error:function(xmlhttprequest,textstatus,errorthrown){
+                console.log(errorthrown);
+            }
+        })
+    }
+
+
+</script>
+</body>
+</html>
