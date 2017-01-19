@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>数据库考试系统 学生端</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../public/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../public/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="../css/student_func.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span class="navbar-title-strong">学生端功能界面</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          <li><a><span class="white-font">欢迎你！<span id="stu_name">NULL&nbsp;</span>[<span id="identity">NULL</span>]</span></a></li>
+          <li><a href="#"><span class="white-font">帮助</span></a></li>
+          <li><a href="#"><span class="white-font">退出</span></a></li>
+          <li><a href="#"><span class="white-font"></span></a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="student_func.html">首页</a></li>
+            <li><a href="student_exam.html">进入考试</a></li>
+            <li class="active"><a href="student_reviw">相关知识</a></li>
+            <li><a href="student_history.html">历史考试</a></li>
+            <li><a href="student_info.html">个人信息</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="page-header">各章节的小结：</h2>
+          <!--选择图标-->
+          <table id="chapter_table" class="table table-striped">
+            <thead>
+              <tr><th>#</th><th>章节</th><th>内容</th><th>链接</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>1</th><th>第一章</th><th>绪论</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>2</th><th>第二章</th><th>关系数据库</th>
+              <th><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>3</th><th>第三章</th><th>关系数据库标准语言SQL</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>4</th><th>第四章</th><th>数据库安全性</th>
+              <th><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>5</th><th>第五章</th><th>数据库完整性</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>6</th><th>第六章</th><th>关系数据理论</th>
+              <th><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>7</th><th>第七章</th><th>数据库设计</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>8</th><th>第八章</th><th>数据库编程</th>
+              <th><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>9</th><th>第九章</th><th>关系查询处理和查询优化</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>10</th><th>第十章</th><th>数据库恢复技术</th>
+              <th><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+              <tr><th>11</th><th>第十一章</th><th>并发控制</th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">click</button></th></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">课件后小结</h4>
+      </div>
+      <div id="content" class="modal-body" style="font-size: 18px;">
+        <p>1. 数据库系统概述<br/>&emsp;数据库的基本概念<br/>&emsp;数据管理的发展过程<br/></p><p>2. 数据模型<br/>&emsp;数据模型的三要素<br/>&emsp;概念模型， E-R 模型<br/>&emsp;三种主要数据库模型<br/></p><p>3. 数据库系统的结构<br/>&emsp;数据库系统三级模式结构<br/>&emsp;数据库系统两层映像系统结构<br/></p><p>4. 数据库系统的组成</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../public/jquery/jquery-3.1.0.min.js"></script>
+    <script src="../public/jquery/jquery.cookie.js"></script>
+    
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../public/ie10-viewport-bug-workaround.js"></script>
+
+    <script src="../js/student_func.js"></script>
+  </body>
+</html>
